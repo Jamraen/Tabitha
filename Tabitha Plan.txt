@@ -1,0 +1,29 @@
+Part 1 - The problem
+Context
+How many tons of clothing is disposed of each year? How many tons of that clothing could have been reused/recycled? How much clothing is reused/recycled each year? Australia/NZ versus world stats? In what way is clothing recycled/reused (e.g sold online, auctioned online, in person, donated, hand-me-downs, op shop, on consignment.)? Clothing makes up a large amount of pollution and landfill, uses resources such as growing cotton which needs farmers, farmland, water and pesticides. Talk about current global resell market.
+The problem
+Selling clothing can be time consuming and difficult, which increases the likelihood that a garment ends up in landfill rather than reused or recycled. I want to make a machine that will make reselling garments easier. Ten steps that go into reselling a garment: 1; Checking for damage/stains. 2; Checking for original cost of garment. 3; pricing the garment. 4; describing the garment. 5; composition and care. 6; ocular observation of the garment. 7; photograph. 8; sizing the garment. 9; specifications (e.g fabric, season, style, etc.). 10; listing the garment e.g on website. 11; Give unique ID. 12; routing garment for in person sale. 13; storage.
+The current approach
+the current system
+Stakeholders
+Possible solutions
+Initial meetings
+Initial pathway
+User Interface
+Accessibility
+information architecture
+Social/Physical environment
+Part 2 - Initial thoughts and Ideas
+Version control
+technical decisions
+Mockup designs
+Part 3 - Getting started
+Software
+Hardware
+Part 4 - Improving the MVP
+Part 5 - Bringing Everything Together
+Part 6 - Conclusion
+Client testing
+future developments
+What ifs - ?????
+Notes for the assessor
