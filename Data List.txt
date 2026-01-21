@@ -1,0 +1,3 @@
+What data is collected and stored:
+Consigner record
+Where clothing is stored (e.g rack, box or bin)
