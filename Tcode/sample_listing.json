@@ -1,0 +1,37 @@
+{
+"category": "skirt",
+
+"primary_colour": "green",
+
+"short_description": "Flowy skirt, perfect for summer days.",
+
+"brand_visible": null,
+
+"size_visible": "10",
+
+"warnings": ["Brand not readable"],
+
+"pricing": {
+
+"currency": "NZD",
+
+"recommended_resale_price": 30.0,
+
+"estimated_original_price": null,
+
+"confidence": 0.55,
+
+"rationale": "Similar skirts often list between $25 and $40."
+
+},
+
+"measurements_cm": {
+
+"length_cm": 84.2,
+
+"waist_flat_cm": 36.0,
+
+"hip_flat_cm": 48.0
+
+}
+}
