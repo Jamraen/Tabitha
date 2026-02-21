@@ -1,3 +1,5 @@
 **/*.env
 *.xxx
 **/*.yyy
+__pycache__/
+*.pyc
