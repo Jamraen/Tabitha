@@ -1,4 +1,4 @@
-Legend 1: 
+xLegend 1: 
 S = Stakeholder
 J = Me
 (NZ second hand shopper)
@@ -24,7 +24,6 @@ S - I think a general question of "What would make op shopping easier for you", 
 J - Thank you for your answers, they have been very helpful. 
 
 
-
 Legend 2: 
 K - Stakeholder
 J - Me
@@ -41,9 +40,9 @@ K - Yes, as usually at op shops you find shoes and clothing from designers aroun
 J - How much does what you buy usually cost all together?
 K - 20 bucks to 200 dollars.
 J - Does that wide variance come from a lack of variety that suits you?
-K - Usually when I go op shopping, I don't have anything in mind. Like, when I'm shopping, I might find a jumper or some shoes for 20 bucks, but sometimes there's some better designer clothing that bumps up the cost to around $200. For example, I found some trainers from [Insert Kate text here] that cost 200 bucks, which would usually cost $500 new.
+K - Usually when I go op shopping, I don't have anything in mind. Like, when I'm shopping, I might find a jumper or some shoes for 20 bucks, but sometimes there's some better designer clothing that bumps up the cost to around $200. For example, I found some trainers from Jimmychoo's that cost 200 bucks, which would usually cost $500 new.
 J - If there were 5-6 bits of data which would be easier to see, would that make shopping easier? e.g. hip, bust, waist, calf, etc., and what would be the most helpful data points?
-K - Yes, especially for shoes, it'd be good to be able to know a shoes measurement for width of shoe and calf measurement. For anything kinda the hips down, anything like a waist measurement a length and thigh diameter. And for anything top wise, shoulder, bust, waist, sleeve length, depth of neckline. Also, I'm not one to buy hats, but I assume something like head circumference. And I think as well, something like a video explanation on how to measure clothing on yourself. 
+K - Yes, especially for shoes, it'd be good to be able to know a shoes measurement for width of shoe and calf measurement. For anything kinda the hips down, anything like a waist measurement a length and thigh diameter. And for anything top wise, shoulder, bust, waist, sleeve length, depth of neckline. Also, I'm not one to buy hats, but I assume something like head circumference. And I think as well, something like a video explanation on how to measure clothing on yourself. Oh, and condition is incredibly important too.
 J - And you mentioned brand, correct?
 K - Yes, brand would help me know how much I should pay for it, and so would material. I found a really nice jumper that was $15 and made of Italian wool yarn, so its new cost would actually probably be much more expensive.
 J - Do people sometimes over and undercharge.
