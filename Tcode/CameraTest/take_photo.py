@@ -27,7 +27,7 @@ def main() -> None:
 
     # 0 is usually the onboard camera.
     # If you have multiple cameras, try 1, 2, etc.
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     if not cap.isOpened():
         print("ERROR: Could not open camera.")
