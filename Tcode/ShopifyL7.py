@@ -21,8 +21,7 @@ def main():
     }
 
     image_urls = [
-        "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg",
-        "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+        "https://reluv.com.au/cdn/shop/products/1681619637-C7P205-VI.A_5000x.jpg?v=1681619641",
     ]
 
     for position, image_url in enumerate(image_urls, start=1):
