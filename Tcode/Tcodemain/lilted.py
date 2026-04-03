@@ -69,7 +69,7 @@ def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm: int = 30):
 
 
 def main():
-    image_path = r"T:\Tcode\Tcodemain\picnicbasket\A_2026-04-02_17-37-21"
+    image_path = r"T:\Tcode\Tcodemain\picnicbasket\Shortsongreen.jpg"
 
     loaded_image = cv2.imread(image_path)
 
