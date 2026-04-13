@@ -28,7 +28,9 @@ def main() -> None:
     # 0 is usually the onboard camera.
     # If you have multiple cameras, try 1, 2, etc.
     cap = cv2.VideoCapture(0)
-
+    # Try to set resolution to ~500x500
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 500)
     if not cap.isOpened():
         print("ERROR: Could not open camera.")
         print("Try closing Zoom/Teams, or change VideoCapture(0) to VideoCapture(1).")
