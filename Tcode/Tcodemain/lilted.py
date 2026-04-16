@@ -5,7 +5,7 @@ import numpy as np
 DICT = cv2.aruco.DICT_4X4_50
 
 MAT_W_CM = 34.5
-MAT_H_CM = 38.0
+MAT_H_CM = 60
 
 CORNER_IDS = {0: "TL", 1: "TR", 2: "BR", 3: "BL"}
 

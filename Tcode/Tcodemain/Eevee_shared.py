@@ -22,11 +22,22 @@ def zigzagbotleft(mask, toprow, botrow, leftcol, rightcol):
                 r = r - 1
                 c = c + 1
 
+def makemaskpoint(mask, r, c, toprow, botrow, leftcol, rightcol):
+    pointsize = 50
+    for r in range (r, r + pointsize, 1):
+        for c in range (c, c + pointsize, 1):
+            if r <= botrow and r >= toprow and c >= leftcol and c <= rightcol:
+                print("@",r,c)
+                mask [r,c] = 100
+    return mask
+            
+
 def showmaskimage(mask, title="rename this window"):
     resized = cv2.resize(mask, dsize=None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
     cv2.imshow(title, resized)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
 def removearucomask(mask, toprow, botrow, leftcol, rightcol):
     arucosize = 110
     botrow = botrow -1

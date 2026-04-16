@@ -4,6 +4,7 @@ import math
 from Eevee_shared import zigzagbotleft 
 from Eevee_shared import removearucomask
 from Eevee_shared import showmaskimage
+from Eevee_shared import makemaskpoint
 # photo height = 1140, photo width = 1035
 # pixels per cm = 1140/38 = 30 for height and 1035/34.5 = 30
 # MAT_W_CM = 34.5 MAT_H_CM = 38.0 these are the numbers from the rectification
@@ -40,4 +41,8 @@ rightcol = mask.shape[1]
 print(toprow, botrow, leftcol, rightcol)
 arucoremove = removearucomask(mask, toprow, botrow, leftcol, rightcol)
 showimagemask = showmaskimage(mask, title="rename this window")
-botleft = zigzagbotleft(mask, toprow, botrow, leftcol, rightcol)
+botleftpoint = zigzagbotleft(mask, toprow, botrow, leftcol, rightcol)
+botleftrow = botleftpoint[0]
+botleftcol = botleftpoint[1]
+mask= makemaskpoint(mask, botleftrow, botleftcol, toprow, botrow, leftcol, rightcol)
+showimagemask = showmaskimage(mask, title="rename this window")
