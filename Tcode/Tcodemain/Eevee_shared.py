@@ -12,25 +12,92 @@ def zigzagbotleft(mask, toprow, botrow, leftcol, rightcol):
     for startpix in range (numrow, 0, -1):
         r = startpix
         c = leftcol
-        print(r,c)
-        while r > toprow and c<= numcol:
+        # print(r,c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
             if mask[r, c] >= 250:
                 print("Found white bottom left ", r, c)
                 return r, c
             else:
-                print(r, c)
+                # print(r, c)
+                mask[r, c] = 150
+                r = r + 1
+                c = c + 1
+def measurepointsinpix(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol):
+    triangleopposite = abs(botleftrow - botrightrow)
+    triangleadjacent = abs (botleftcol - botrightcol)
+    trianglehyp = (triangleopposite**2 + triangleadjacent**2)**.5
+    return trianglehyp
+
+def zigzagbotright(mask, toprow, botrow, leftcol, rightcol):
+    print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
+    numcol = rightcol - 1
+    numrow = botrow - 1
+    botrow = botrow - 1
+    rightcol = rightcol - 1
+    print("numcol", numcol, "numrow",numrow, "botrow",botrow)
+    for startpix in range (numrow, 0, -1):
+        r = startpix
+        c = rightcol
+        # print(r,c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
+            if mask[r, c] >= 250:
+                print("Found white bottom right ", r, c)
+                return r, c
+            else:
+                # print(r, c)
+                mask[r, c] = 150
+                r = r + 1
+                c = c - 1
+
+def zigzagtopleft(mask, toprow, botrow, leftcol, rightcol):
+    print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
+    numcol = rightcol - 1
+    numrow = botrow - 1
+    botrow = botrow - 1
+    rightcol = rightcol - 1
+    print("numcol", numcol, "numrow",numrow, "botrow",botrow)
+    for startpix in range (toprow, numrow, 1):
+        r = startpix
+        c = leftcol
+        # print(r, c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
+            if mask[r, c] >= 250:
+                print("Found white top left ", r, c)
+                return r, c
+            else:
+                mask[r, c] = 150
                 r = r - 1
                 c = c + 1
 
+def zigzagtopright(mask, toprow, botrow, leftcol, rightcol):
+    print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
+    numcol = rightcol - 1
+    numrow = botrow - 1
+    botrow = botrow - 1
+    rightcol = rightcol - 1
+    print("numcol", numcol, "numrow",numrow, "botrow",botrow)
+    for startpix in range (toprow, numrow , 1):
+        r = startpix
+        c = rightcol
+        # print(r,c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
+            if mask[r, c] >= 250:
+                print("Found white top right ", r, c)
+                return r, c
+            else:
+                mask[r, c] = 150
+                # print(r, c)
+                r = r - 1
+                c = c - 1
+
 def makemaskpoint(mask, r, c, toprow, botrow, leftcol, rightcol):
     pointsize = 50
-    for r in range (r, r + pointsize, 1):
-        for c in range (c, c + pointsize, 1):
-            if r <= botrow and r >= toprow and c >= leftcol and c <= rightcol:
-                print("@",r,c)
-                mask [r,c] = 100
+    half = pointsize // 2
+    for row in range(r - half, r + half):
+        for col in range(c - half, c + half):
+            if toprow <= row < botrow and leftcol <= col < rightcol:
+                mask[row, col] = 100
     return mask
-            
 
 def showmaskimage(mask, title="rename this window"):
     resized = cv2.resize(mask, dsize=None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
