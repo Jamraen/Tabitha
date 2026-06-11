@@ -1,0 +1,10 @@
+{
+  "type": "top",
+  "primary_colour": "black",
+  "warnings": [
+    "Label not readable",
+    "Lighting too dark",
+    "Dress too ugly"
+  ],
+  "season": "winter"
+}

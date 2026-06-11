@@ -1,0 +1,53 @@
+Hi J,
+
+Design one (product),
+Design Three (Lighting) 
+
+ I don't think anyone wants another piece of bulky hardware in their workplace so keep it simple 
+
+If this is for product design in terms of building hardware, by all means go ahead and build a case and a tray for the keyboard. I would:
+
+Create a box like you have in your picture, the rectangular box.
+The mouse and keyboard would be external, plugging in, and the monitor external.
+Build as part of the case,  stand  at the back, which is a metal or plastic that is sturdy.
+The case would serve a purpose of just having the electronics in it, probably a  Rasberry PI or mini PC (Users may want to do other things on the computer too eg networked to other devices, browse the web to check eBay or look at the product in a browser) 
+I would give the user the option of supplying their own computer if they want
+Handheld barcode scanner
+Your sell here is the subscription software (Cloud based)  that manages the process in my opinion and the box is just a tool to make the process dummy proof 
+Usage of buttons 
+1.) Shoot photos
+2.)Pressing button 2 indicates photos are apporved and size measure must  now must take place 
+3.) Pressing button 3 indicates the size is approved  (interaction with keyboard and mouse necessary to make ammendments)  and now an AI prouct description tool must draft a description
+4.) Pressing button 4 pushes all the data into Shopify or som sort of product management system 
+
+There are actually so many moving parts to think about here over and above this. 
+
+Lighting ideas HERE
+
+Adjustable Trestle Table legs  HERE
+
+If I was building this:
+It would all be software based with a touch screen or screens, no hardware 
+I think that a table with a 30 degree - 40 degree angle   or the ability to pivot from flat to rotate with a white or grey background is ideal. Ergonomics is a big thing if using for a long time as it takes away strain on the users back 
+Barcode scanner: Better to have a handheld one with a button, or use an iPhone or some other scanning device . There are limitations with bigger garments to get them to the scanner. Bring the scanner to the product.
+Screen: BIG especially if taking photos, and I would suggest one of the type that can pivot form horizontal to vertical 
+
+
+ 
+See here, also the way this table  folds could be great for limited space 
+Reseller Photography Station #reselling #makemoneyonline #ebayseller
+How I take my eBay product photos! #ebayseller #resellercommunity #reseller #ebay
+
+
+Greatest idea for Skyhook or gantry type holder for camera
+How to create product pictures on a budget #shorts #photography #ecommerce #streetwear #design
+
+
+Some useless info that is probably not relevant as you dont have a backlight - What we used to do is actually shine light through the white backing drop, this was a more complex setup whereby the items were put onto a hangar... painful 
+
+image.png
+
+Some setup ideas
+
+How to create product pictures on a budget #shorts #photography #ecommerce #streetwear #design
+Regards

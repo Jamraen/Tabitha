@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nested For Loops Tutorial</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: sans-serif; color: #1a1a1a; background: #fff; padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+  .wrap { padding: 1.5rem 0; }
+  .step-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .step-btn { padding: 6px 14px; font-size: 13px; border: 1px solid #ccc; border-radius: 8px; background: transparent; color: #666; cursor: pointer; transition: all 0.15s; }
+  .step-btn.active { background: #f0f0f0; color: #1a1a1a; border-color: #999; font-weight: 500; }
+  .step-btn:hover { background: #f0f0f0; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .scenario-label { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .scenario-title { font-size: 18px; font-weight: 500; margin-bottom: 0.25rem; }
+  .scenario-desc { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 1.25rem; }
+  .grid-wrap { display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .grid-area { flex: 1; min-width: 200px; }
+  .grid-label { font-size: 12px; color: #999; margin-bottom: 8px; }
+  .seat-grid { display: grid; gap: 6px; }
+  .seat { width: 36px; height: 36px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; border: 1px solid #ddd; background: #f5f5f5; color: #666; transition: all 0.2s; cursor: default; }
+  .seat.highlight { background: #B5D4F4; border-color: #378ADD; color: #0C447C; }
+  .seat.done { background: #C0DD97; border-color: #639922; color: #27500A; }
+  .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+  .speed-label { font-size: 13px; color: #555; }
+  .btn { padding: 7px 16px; font-size: 13px; border: 1px solid #ccc; border-radius: 8px; background: transparent; color: #1a1a1a; cursor: pointer; }
+  .btn:hover { background: #f0f0f0; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.primary { border-color: #378ADD; color: #185FA5; }
+  .btn.pause-btn { border-color: #BA7517; color: #633806; min-width: 72px; }
+  .btn.step-fwd { border-color: #639922; color: #27500A; }
+  .code-box { background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 1rem 1.25rem; font-family: monospace; font-size: 13px; line-height: 1.8; margin-bottom: 1rem; overflow-x: auto; white-space: pre; }
+  .hl-outer { color: #BA7517; font-weight: 500; }
+  .hl-inner { color: #185FA5; font-weight: 500; }
+  .hl-body  { color: #3B6D11; font-weight: 500; }
+  .dim { color: #999; }
+  .state-bar { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .state-pill { padding: 4px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+  .pill-outer { background: #FAEEDA; color: #633806; }
+  .pill-inner { background: #E6F1FB; color: #185FA5; }
+  .pill-action { background: #EAF3DE; color: #27500A; }
+  .output-box { background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 0.75rem 1rem; font-family: monospace; font-size: 12px; line-height: 1.7; max-height: 160px; overflow-y: auto; color: #555; }
+  .output-line { color: #1a1a1a; }
+  canvas { border: 1px solid #ddd; border-radius: 4px; display: block; }
+  .tip { background: #f5f5f5; border-left: 3px solid #378ADD; padding: 0.75rem 1rem; font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 1rem; }
+  .divider { border: none; border-top: 1px solid #eee; margin: 1.25rem 0; }
+  .paused-banner { display: none; align-items: center; gap: 10px; padding: 8px 14px; background: #FAEEDA; border-radius: 8px; font-size: 13px; color: #633806; font-weight: 500; margin-bottom: 1rem; }
+  .paused-banner.visible { display: flex; }
+  .paused-dot { width: 8px; height: 8px; border-radius: 50%; background: #BA7517; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="step-btns">
+  <button class="step-btn active" onclick="show(0)">1. Cinema seats</button>
+  <button class="step-btn" onclick="show(1)">2. How loops nest</button>
+  <button class="step-btn" onclick="show(2)">3. Mask scan</button>
+  <button class="step-btn" onclick="show(3)">4. Try it yourself</button>
+</div>
+
+<!-- SECTION 0: Cinema -->
+<div class="section active" id="s0">
+  <div class="scenario-label">Real world example</div>
+  <div class="scenario-title">A cinema with rows of seats</div>
+  <div class="scenario-desc">Imagine you're an usher checking every seat in a cinema. You start at row A, check seat 1, seat 2, seat 3... When you finish that row, you move to row B and start again from seat 1. That's exactly what two nested loops do.</div>
+
+  <div class="code-box"><span class="dim"># outer loop: one step per ROW</span>
+<span class="hl-outer">for row_letter in ["A","B","C","D"]:</span>
+
+    <span class="dim"># inner loop: one step per SEAT in that row</span>
+    <span class="hl-inner">for seat_number in [1, 2, 3, 4, 5]:</span>
+
+        <span class="hl-body">print(row_letter, seat_number)</span></div>
+
+  <div class="controls">
+    <button class="btn primary" id="cin-play" onclick="cinPlay()">Run</button>
+    <button class="btn pause-btn" id="cin-pause" onclick="cinTogglePause()" disabled>Pause</button>
+    <button class="btn step-fwd" id="cin-step" onclick="cinStep()" disabled>Step →</button>
+    <button class="btn" onclick="cinReset()">Reset</button>
+    <span class="speed-label" style="margin-left:8px;">Speed:</span>
+    <input type="range" min="1" max="5" value="3" id="cin-speed" style="width:80px;" oninput="cinSpeedChange()">
+  </div>
+
+  <div class="paused-banner" id="cin-paused-banner">
+    <div class="paused-dot"></div>
+    Paused — explain what's on screen, then press Resume or Step →
+  </div>
+
+  <div class="state-bar">
+    <span class="state-pill pill-outer" id="cin-outer">outer loop: —</span>
+    <span class="state-pill pill-inner" id="cin-inner">inner loop: —</span>
+    <span class="state-pill pill-action" id="cin-action">—</span>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="grid-area">
+      <div class="grid-label">Cinema seats (4 rows × 5 seats)</div>
+      <div class="seat-grid" id="cin-grid" style="grid-template-columns: repeat(5, 36px);"></div>
+    </div>
+    <div class="grid-area">
+      <div class="grid-label">Output</div>
+      <div class="output-box" id="cin-output">— press Run —</div>
+    </div>
+  </div>
+
+  <div class="tip">The outer loop moves <strong>slowly</strong> — once per row. The inner loop moves <strong>fast</strong> — it completes fully before the outer loop takes its next step.</div>
+</div>
+
+<!-- SECTION 1: How loops nest -->
+<div class="section" id="s1">
+  <div class="scenario-label">Understanding the structure</div>
+  <div class="scenario-title">What "nested" actually means</div>
+  <div class="scenario-desc">Every time the outer loop takes one step, the inner loop runs all the way through. So with 4 rows and 5 seats: the body runs 4 × 5 = 20 times total.</div>
+
+  <div class="code-box">rows = 4
+seats_per_row = 5
+
+<span class="hl-outer">for row in range(rows):           <span class="dim"># runs 4 times</span></span>
+
+    <span class="hl-inner">for seat in range(seats_per_row): <span class="dim"># runs 5 times PER ROW</span></span>
+
+        <span class="hl-body">print(row, seat)              <span class="dim"># runs 4×5 = 20 times total</span></span></div>
+
+  <div class="tip">Note: <code>range(4)</code> gives you 0, 1, 2, 3 — not 1, 2, 3, 4. If you want to start at 1, use <code>range(1, 5)</code>.</div>
+  <hr class="divider">
+  <div class="scenario-desc">Change the sizes and watch the total update:</div>
+  <div style="display:flex; gap:2rem; flex-wrap:wrap; margin-bottom:1rem;">
+    <div>
+      <div class="grid-label" style="margin-bottom:6px;">Outer loop size (rows): <span id="nl-outer-val" style="font-weight:500;color:#1a1a1a;">4</span></div>
+      <input type="range" min="1" max="8" value="4" id="nl-outer" oninput="nlUpdate()" style="width:160px;">
+    </div>
+    <div>
+      <div class="grid-label" style="margin-bottom:6px;">Inner loop size (seats): <span id="nl-inner-val" style="font-weight:500;color:#1a1a1a;">5</span></div>
+      <input type="range" min="1" max="10" value="5" id="nl-inner" oninput="nlUpdate()" style="width:160px;">
+    </div>
+  </div>
+  <div class="state-bar">
+    <span class="state-pill pill-outer">outer runs: <span id="nl-outer-runs">4</span> times</span>
+    <span class="state-pill pill-inner">inner runs: <span id="nl-inner-runs">5</span> per outer step</span>
+    <span class="state-pill pill-action">body runs: <span id="nl-total">20</span> times total</span>
+  </div>
+  <div style="margin-top:1rem;">
+    <div class="grid-label" style="margin-bottom:8px;">Each cell = one time the body runs</div>
+    <div id="nl-grid" style="display:grid; gap:4px;"></div>
+  </div>
+</div>
+
+<!-- SECTION 2: Mask scan -->
+<div class="section" id="s2">
+  <div class="scenario-label">Back to the project</div>
+  <div class="scenario-title">Scanning a mask pixel by pixel</div>
+  <div class="scenario-desc">The mask is just a grid of pixels. To check every pixel, we use two nested loops — outer loop goes row by row (top to bottom), inner loop goes pixel by pixel across each row.</div>
+
+  <div class="code-box"><span class="hl-outer">for y in range(image_height):     <span class="dim"># outer: each row top→bottom</span></span>
+
+    <span class="hl-inner">for x in range(image_width):  <span class="dim"># inner: each pixel left→right</span></span>
+
+        <span class="hl-body">colour = mask[y, x]
+        if colour == 255:
+            print(x, y, "is white")</span></div>
+
+  <div class="controls">
+    <button class="btn primary" id="px-play" onclick="pxPlay()">Animate scan</button>
+    <button class="btn pause-btn" id="px-pause" onclick="pxTogglePause()" disabled>Pause</button>
+    <button class="btn step-fwd" id="px-step" onclick="pxStep()" disabled>Step →</button>
+    <button class="btn" onclick="pxReset()">Reset</button>
+    <span class="speed-label" style="margin-left:8px;">Speed:</span>
+    <input type="range" min="1" max="10" value="5" id="px-speed" style="width:80px;" oninput="pxSpeedChange()">
+  </div>
+
+  <div class="paused-banner" id="px-paused-banner">
+    <div class="paused-dot"></div>
+    Paused — explain what's on screen, then press Resume or Step →
+  </div>
+
+  <div class="state-bar">
+    <span class="state-pill pill-outer" id="px-outer">y (row): —</span>
+    <span class="state-pill pill-inner" id="px-inner">x (col): —</span>
+    <span class="state-pill pill-action" id="px-action">—</span>
+  </div>
+
+  <div style="display:flex; gap:1.5rem; flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <div class="grid-label" style="margin-bottom:6px;">Simplified mask (30×40 pixels)</div>
+      <canvas id="px-canvas" width="300" height="400"></canvas>
+    </div>
+    <div style="flex:1; min-width:160px;">
+      <div class="grid-label" style="margin-bottom:6px;">White pixels found</div>
+      <div class="output-box" id="px-output">— press Animate scan —</div>
+      <div style="margin-top:0.75rem; font-size:13px; color:#555;">
+        <span style="display:inline-block;width:12px;height:12px;background:#B5D4F4;border-radius:2px;margin-right:4px;"></span>current pixel
+        <span style="display:inline-block;width:12px;height:12px;background:#C0DD97;border-radius:2px;margin-right:4px;margin-left:12px;"></span>white (your item)
+        <span style="display:inline-block;width:12px;height:12px;background:#888;border-radius:2px;margin-right:4px;margin-left:12px;"></span>black (background)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: Try it yourself -->
+<div class="section" id="s3">
+  <div class="scenario-label">Your turn</div>
+  <div class="scenario-title">Predict what the loop prints</div>
+  <div class="scenario-desc">Read the code, then guess what it prints before pressing Run. Change the values and guess again. This is how you build real confidence.</div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
+    <div>
+      <div class="grid-label" style="margin-bottom:6px;">Outer values</div>
+      <input type="text" id="q-outer" value="A, B, C" style="width:100%; padding:7px 10px; font-size:13px; border-radius:8px; border:1px solid #ccc; background:transparent; color:#1a1a1a;">
+    </div>
+    <div>
+      <div class="grid-label" style="margin-bottom:6px;">Inner values</div>
+      <input type="text" id="q-inner" value="1, 2, 3" style="width:100%; padding:7px 10px; font-size:13px; border-radius:8px; border:1px solid #ccc; background:transparent; color:#1a1a1a;">
+    </div>
+  </div>
+  <div class="code-box" id="q-code-preview">loading...</div>
+  <div style="margin-bottom:1rem;">
+    <div class="grid-label" style="margin-bottom:6px;">Your prediction (one output per line)</div>
+    <textarea id="q-guess" rows="6" style="width:100%; padding:8px 10px; font-size:13px; font-family:monospace; border-radius:8px; border:1px solid #ccc; background:transparent; color:#1a1a1a; resize:vertical;" placeholder="A 1&#10;A 2&#10;..."></textarea>
+  </div>
+  <div class="controls">
+    <button class="btn primary" onclick="qCheck()">Check my answer</button>
+    <button class="btn" onclick="qUpdate()">Update code</button>
+  </div>
+  <div id="q-result" style="margin-top:1rem; display:none;">
+    <div class="grid-label" style="margin-bottom:6px;">Actual output</div>
+    <div class="output-box" id="q-actual"></div>
+    <div id="q-verdict" style="margin-top:0.75rem; font-size:14px; font-weight:500;"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function show(i) {
+  document.querySelectorAll('.section').forEach((s,j) => s.classList.toggle('active', i===j));
+  document.querySelectorAll('.step-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  if (i===1) nlUpdate();
+  if (i===3) qUpdate();
+}
+
+/* ══ CINEMA ══════════════════════════════════════════════════════ */
+const cinRows = ["A","B","C","D"], cinSeats = [1,2,3,4,5];
+let cinTimer=null, cinPaused=false, cinDone=false;
+let cinRi=0, cinSi=0;
+
+function cinGetSpd() { return [600,450,300,180,90][document.getElementById('cin-speed').value-1]; }
+
+function cinBuildGrid() {
+  const g=document.getElementById('cin-grid'); g.innerHTML='';
+  cinRows.forEach(r=>cinSeats.forEach(s=>{
+    const d=document.createElement('div');
+    d.className='seat'; d.id=`cin-${r}-${s}`; d.textContent=`${r}${s}`; g.appendChild(d);
+  }));
+}
+
+function cinReset() {
+  clearInterval(cinTimer); cinTimer=null;
+  cinPaused=false; cinDone=false; cinRi=0; cinSi=0;
+  document.getElementById('cin-play').disabled=false;
+  document.getElementById('cin-play').textContent='Run';
+  document.getElementById('cin-pause').disabled=true;
+  document.getElementById('cin-pause').textContent='Pause';
+  document.getElementById('cin-step').disabled=true;
+  document.getElementById('cin-paused-banner').classList.remove('visible');
+  document.getElementById('cin-outer').textContent='outer loop: —';
+  document.getElementById('cin-inner').textContent='inner loop: —';
+  document.getElementById('cin-action').textContent='—';
+  document.getElementById('cin-output').innerHTML='— press Run —';
+  cinBuildGrid();
+}
+
+function cinDoStep() {
+  if (cinRi >= cinRows.length) { cinFinish(); return; }
+  const r=cinRows[cinRi], s=cinSeats[cinSi];
+  document.querySelectorAll('.seat').forEach(el=>{ if(el.classList.contains('highlight')) el.classList.replace('highlight','done'); });
+  document.getElementById(`cin-${r}-${s}`).className='seat highlight';
+  document.getElementById('cin-outer').textContent=`outer loop: row "${r}"`;
+  document.getElementById('cin-inner').textContent=`inner loop: seat ${s}`;
+  document.getElementById('cin-action').textContent=`checking ${r}${s}`;
+  const out=document.getElementById('cin-output');
+  const line=document.createElement('div'); line.className='output-line'; line.textContent=`${r} ${s}`; out.appendChild(line); out.scrollTop=9999;
+  cinSi++;
+  if (cinSi>=cinSeats.length) { cinSi=0; cinRi++; }
+  if (cinRi>=cinRows.length) { cinFinish(); }
+}
+
+function cinFinish() {
+  clearInterval(cinTimer); cinTimer=null; cinDone=true;
+  document.getElementById('cin-play').disabled=false;
+  document.getElementById('cin-play').textContent='Run';
+  document.getElementById('cin-pause').disabled=true;
+  document.getElementById('cin-pause').textContent='Pause';
+  document.getElementById('cin-step').disabled=true;
+  document.getElementById('cin-paused-banner').classList.remove('visible');
+  document.getElementById('cin-action').textContent='done — all seats checked';
+}
+
+function cinPlay() {
+  if (cinDone) cinReset();
+  cinPaused=false;
+  document.getElementById('cin-play').disabled=true;
+  document.getElementById('cin-pause').disabled=false;
+  document.getElementById('cin-step').disabled=true;
+  document.getElementById('cin-paused-banner').classList.remove('visible');
+  cinTimer=setInterval(cinDoStep, cinGetSpd());
+}
+
+function cinTogglePause() {
+  if (!cinPaused) {
+    clearInterval(cinTimer); cinTimer=null; cinPaused=true;
+    document.getElementById('cin-pause').textContent='Resume';
+    document.getElementById('cin-step').disabled=false;
+    document.getElementById('cin-paused-banner').classList.add('visible');
+  } else {
+    cinPaused=false;
+    document.getElementById('cin-pause').textContent='Pause';
+    document.getElementById('cin-step').disabled=true;
+    document.getElementById('cin-paused-banner').classList.remove('visible');
+    cinTimer=setInterval(cinDoStep, cinGetSpd());
+  }
+}
+
+function cinStep() { cinDoStep(); }
+function cinSpeedChange() { if (!cinPaused && cinTimer) { clearInterval(cinTimer); cinTimer=setInterval(cinDoStep, cinGetSpd()); } }
+
+cinBuildGrid();
+
+/* ══ NESTED COUNTER ══════════════════════════════════════════════ */
+function nlUpdate() {
+  const ov=+document.getElementById('nl-outer').value;
+  const iv=+document.getElementById('nl-inner').value;
+  document.getElementById('nl-outer-val').textContent=ov;
+  document.getElementById('nl-inner-val').textContent=iv;
+  document.getElementById('nl-outer-runs').textContent=ov;
+  document.getElementById('nl-inner-runs').textContent=iv;
+  document.getElementById('nl-total').textContent=ov*iv;
+  const g=document.getElementById('nl-grid');
+  g.style.gridTemplateColumns=`repeat(${iv}, 28px)`; g.innerHTML='';
+  for(let o=0;o<ov;o++) for(let i=0;i<iv;i++){
+    const d=document.createElement('div');
+    d.style.cssText=`width:28px;height:28px;border-radius:4px;border:1px solid #ddd;background:${o%2===0?'#E6F1FB':'#EAF3DE'};font-size:9px;display:flex;align-items:center;justify-content:center;color:#666;`;
+    d.textContent=`${o},${i}`; g.appendChild(d);
+  }
+}
+
+/* ══ PIXEL SCAN ══════════════════════════════════════════════════ */
+const PW=30,PH=40,CELL=10;
+let pxTimer=null,pxPaused=false,pxDone=false;
+let pxX=0,pxY=0,pxCount=0;
+
+const pxMask=[];
+for(let y=0;y<PH;y++){pxMask.push([]);for(let x=0;x<PW;x++){
+  const cx=PW/2,cy=PH*0.38,rx=PW*0.38,ry=PH*0.22;
+  const ex=(x-cx)/rx,ey=(y-cy)/ry;
+  pxMask[y].push(ex*ex+ey*ey<=1?255:0);
+}}
+
+function pxGetSpd(){return[200,130,80,40,20,12,8,5,3,2][document.getElementById('px-speed').value-1];}
+
+function pxDraw(curX,curY){
+  const ctx=document.getElementById('px-canvas').getContext('2d');
+  ctx.clearRect(0,0,PW*CELL,PH*CELL);
+  for(let y=0;y<PH;y++) for(let x=0;x<PW;x++){
+    const done=curY!==null&&(y<curY||(y===curY&&x<curX));
+    const isCur=x===curX&&y===curY;
+    const white=pxMask[y][x]===255;
+    if(isCur) ctx.fillStyle='#B5D4F4';
+    else if(done&&white) ctx.fillStyle='#C0DD97';
+    else if(white) ctx.fillStyle='#e8e8e8';
+    else ctx.fillStyle='#555';
+    ctx.fillRect(x*CELL,y*CELL,CELL-1,CELL-1);
+  }
+}
+
+function pxDoStep(){
+  if(pxY>=PH){pxFinish();return;}
+  pxDraw(pxX,pxY);
+  document.getElementById('px-outer').textContent=`y (row): ${pxY}`;
+  document.getElementById('px-inner').textContent=`x (col): ${pxX}`;
+  const out=document.getElementById('px-output');
+  if(pxMask[pxY][pxX]===255){
+    pxCount++;
+    document.getElementById('px-action').textContent=`white! (${pxCount} found so far)`;
+    const l=document.createElement('div');l.className='output-line';l.textContent=`x=${pxX} y=${pxY} → white`;out.appendChild(l);out.scrollTop=9999;
+  } else {
+    document.getElementById('px-action').textContent='black — skip';
+  }
+  pxX++;
+  if(pxX>=PW){pxX=0;pxY++;}
+  if(pxY>=PH){pxFinish();}
+}
+
+function pxFinish(){
+  clearInterval(pxTimer);pxTimer=null;pxDone=true;
+  document.getElementById('px-play').disabled=false;
+  document.getElementById('px-play').textContent='Animate scan';
+  document.getElementById('px-pause').disabled=true;
+  document.getElementById('px-pause').textContent='Pause';
+  document.getElementById('px-step').disabled=true;
+  document.getElementById('px-paused-banner').classList.remove('visible');
+  document.getElementById('px-action').textContent=`done — ${pxCount} white pixels found`;
+}
+
+function pxReset(){
+  clearInterval(pxTimer);pxTimer=null;pxPaused=false;pxDone=false;pxX=0;pxY=0;pxCount=0;
+  document.getElementById('px-play').disabled=false;
+  document.getElementById('px-play').textContent='Animate scan';
+  document.getElementById('px-pause').disabled=true;
+  document.getElementById('px-pause').textContent='Pause';
+  document.getElementById('px-step').disabled=true;
+  document.getElementById('px-paused-banner').classList.remove('visible');
+  document.getElementById('px-outer').textContent='y (row): —';
+  document.getElementById('px-inner').textContent='x (col): —';
+  document.getElementById('px-action').textContent='—';
+  document.getElementById('px-output').innerHTML='— press Animate scan —';
+  pxDraw(null,null);
+}
+
+function pxPlay(){
+  if(pxDone) pxReset();
+  pxPaused=false;
+  document.getElementById('px-play').disabled=true;
+  document.getElementById('px-pause').disabled=false;
+  document.getElementById('px-step').disabled=true;
+  document.getElementById('px-paused-banner').classList.remove('visible');
+  pxTimer=setInterval(pxDoStep,pxGetSpd());
+}
+
+function pxTogglePause(){
+  if(!pxPaused){
+    clearInterval(pxTimer);pxTimer=null;pxPaused=true;
+    document.getElementById('px-pause').textContent='Resume';
+    document.getElementById('px-step').disabled=false;
+    document.getElementById('px-paused-banner').classList.add('visible');
+  } else {
+    pxPaused=false;
+    document.getElementById('px-pause').textContent='Pause';
+    document.getElementById('px-step').disabled=true;
+    document.getElementById('px-paused-banner').classList.remove('visible');
+    pxTimer=setInterval(pxDoStep,pxGetSpd());
+  }
+}
+
+function pxStep(){pxDoStep();}
+function pxSpeedChange(){if(!pxPaused&&pxTimer){clearInterval(pxTimer);pxTimer=setInterval(pxDoStep,pxGetSpd());}}
+
+pxDraw(null,null);
+
+/* ══ QUIZ ════════════════════════════════════════════════════════ */
+function qUpdate(){
+  const ov=document.getElementById('q-outer').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const iv=document.getElementById('q-inner').value.split(',').map(s=>s.trim()).filter(Boolean);
+  document.getElementById('q-code-preview').innerHTML=
+    `<span class="hl-outer">for outer_value in [${ov.map(v=>`"${v}"`).join(', ')}]:</span>\n`+
+    `    <span class="hl-inner">for inner_value in [${iv.map(v=>`"${v}"`).join(', ')}]:</span>\n`+
+    `        <span class="hl-body">print(outer_value, inner_value)</span>`;
+  document.getElementById('q-result').style.display='none';
+}
+
+function qCheck(){
+  const ov=document.getElementById('q-outer').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const iv=document.getElementById('q-inner').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const actual=[];
+  ov.forEach(o=>iv.forEach(i=>actual.push(`${o} ${i}`)));
+  const guess=document.getElementById('q-guess').value.trim().split('\n').map(s=>s.trim()).filter(Boolean);
+  document.getElementById('q-actual').innerHTML=actual.map(l=>`<div class="output-line">${l}</div>`).join('');
+  const correct=JSON.stringify(guess)===JSON.stringify(actual);
+  const v=document.getElementById('q-verdict');
+  v.textContent=correct?'Correct! Your prediction matched exactly.':'Not quite — compare your prediction to the actual output above.';
+  v.style.color=correct?'#3B6D11':'#993C1D';
+  document.getElementById('q-result').style.display='block';
+}
+qUpdate();
+</script>
+</body>
+</html>

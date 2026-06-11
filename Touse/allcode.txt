@@ -1,0 +1,593 @@
+import os
+import time
+import cv2
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def get_garment_type():
+    garment_type = input("Please type 1 for skirt, 2 for dress, 3 for pants, 4 for shirt, then press enter")
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def ensure_output_folder(folder_name: str = "photos") -> str:
+    """Create an output folder next to this script if it doesn't exist."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    out_dir = os.path.join(script_dir, folder_name)
+    os.makedirs(out_dir, exist_ok=True)
+    return out_dir
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def make_filename(prefix: str = "photo") -> str:
+    """Create a timestamped filename like photo_2026-02-15_14-03-22.jpg."""
+    timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+    return f"{prefix}_{timestamp}.jpg"
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def main() -> None:
+    out_dir = ensure_output_folder("picnicbasket")
+
+    # 0 is usually the onboard camera.
+    # If you have multiple cameras, try 1, 2, etc.
+    cap = cv2.VideoCapture(0)
+    # Try to set resolution to ~500x500
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 500)
+    if not cap.isOpened():
+        print("ERROR: Could not open camera.")
+        print("Try closing Zoom/Teams, or change VideoCapture(0) to VideoCapture(1).")
+        return
+
+    print("Camera opened.")
+    print("Press:")
+    print(" SPACE to take photo")
+    print(" Q to quit")
+
+    while True:
+        ok, frame = cap.read()
+
+        if not ok:
+            print("ERROR: Could not read a frame from the camera.")
+            break
+
+        cv2.imshow("Preview - press SPACE to capture, Q to quit", frame)
+
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord(" "):
+            label = input("Type a label for this photo (e.g. dress_blue_001): ").strip()
+
+            if not label:
+                label = "photo"
+
+            filename = make_filename(label)
+            save_path = os.path.join(out_dir, filename)
+
+            cv2.imwrite(save_path, frame)
+            print(f"Saved: {save_path}")
+
+        elif key == ord("q"):
+            print("Quitting.")
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    main()
+##Currently working, just had to input the correct photo location
+import cv2
+import numpy as np
+
+DICT = cv2.aruco.DICT_4X4_50
+
+MAT_W_CM = 34.5
+MAT_H_CM = 60
+
+CORNER_IDS = {0: "TL", 1: "TR", 2: "BR", 3: "BL"}
+
+
+def detect_aruco_corners(loaded_image: np.ndarray) -> dict[int, np.ndarray]:
+    dictionary = cv2.aruco.getPredefinedDictionary(DICT)
+    parameters = cv2.aruco.DetectorParameters()
+    detector = cv2.aruco.ArucoDetector(dictionary, parameters)
+
+    corners_list, ids, _ = detector.detectMarkers(loaded_image)
+
+    if ids is None:
+        return {}
+
+    ids = ids.flatten()
+    found = {}
+
+    for corners, marker_id in zip(corners_list, ids):
+        marker_id = int(marker_id)
+
+        if marker_id in CORNER_IDS:
+            pts = corners.reshape(4, 2).astype(np.float32)
+            center = pts.mean(axis=0)
+            found[marker_id] = center
+
+    return found
+
+
+def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm: int = 30):
+    found = detect_aruco_corners(loaded_image)
+
+    missing = [mid for mid in CORNER_IDS if mid not in found]
+    if missing:
+        raise ValueError(f"Missing ArUco corner IDs in image: {missing}")
+
+    # source points in the original photo
+    src = np.array(
+        [found[0], found[1], found[2], found[3]],
+        dtype=np.float32
+    )
+
+    # output size
+    W = int(round(MAT_W_CM * pixels_per_cm))
+    H = int(round(MAT_H_CM * pixels_per_cm))
+
+    # destination rectangle
+    dst = np.array(
+        [[0, 0], [W - 1, 0], [W - 1, H - 1], [0, H - 1]],
+        dtype=np.float32
+    )
+
+    # perspective transform
+    Hmat = cv2.getPerspectiveTransform(src, dst)
+
+    # warp image
+    rectified = cv2.warpPerspective(
+        loaded_image, Hmat, (W, H), flags=cv2.INTER_LINEAR
+    )
+
+    return rectified, Hmat, pixels_per_cm
+
+
+def main():
+    image_path = r"T:\Tcode\Tcodemain\picnicbasket\Shortsongreen.jpg"
+
+    loaded_image = cv2.imread(image_path)
+
+    if loaded_image is None:
+        print("Could not load image:", image_path)
+        return
+
+    try:
+        rectified, _, ppcm = rectify_to_mat(loaded_image, pixels_per_cm=30)
+    except ValueError as e:
+        print(e)
+        return
+
+    out_path = image_path.replace(".jpg", "_rectified.jpg")
+    cv2.imwrite(out_path, rectified)
+
+    print("Wrote:", out_path)
+    print("pixels_per_cm used:", ppcm)
+    print("Rectified size (pixels):", rectified.shape[1], "x", rectified.shape[0])
+
+
+if __name__ == "__main__":
+    main()import cv2, os
+
+import numpy as np
+
+
+path = r"T:\Tcode\Tcodemain\picnicbasket\shortsongreen_rectified.jpg"
+
+img = cv2.imread(path)
+
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+lower = np.array([15, 30, 30])
+
+upper = np.array([45, 255, 255])
+
+# lower = np.array([30, 100, 100])
+#Unsuccessful values ^ and below
+# upper = np.array([45, 255, 255])
+
+
+mat_mask = cv2.inRange(hsv, lower, upper)
+
+mask = cv2.bitwise_not(mat_mask)
+
+
+# CLOSE = fill holes
+
+k_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))
+
+mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, k_close, iterations=2)
+
+
+# OPEN = remove specks
+
+k_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+
+mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, k_open, iterations=1)
+
+
+base = os.path.splitext(path)[0]
+
+cv2.imwrite(base + "_mask_clean.png", mask)
+
+
+print("Wrote:", base + "_mask_clean.png")import cv2
+import numpy as np
+import math
+#these are the common functions shared among the other sections of Tabitha code.
+def zigzagbotleft(mask, toprow, botrow, leftcol, rightcol):
+    print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
+    numcol = rightcol - 1
+    numrow = botrow - 1
+    botrow = botrow - 1
+    rightcol = rightcol - 1
+    print("numcol", numcol, "numrow",numrow, "botrow",botrow)
+    for startpix in range (numrow, 0, -1):
+        r = startpix
+        c = leftcol
+        # print(r,c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
+            if mask[r, c] >= 250:
+                print("Found white bottom left ", r, c)
+                return r, c
+            else:
+                # print(r, c)
+                mask[r, c] = 150
+                r = r + 1
+                c = c + 1
+def measurepointsinpix(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol):
+    triangleopposite = abs(botleftrow - botrightrow)
+    triangleadjacent = abs (botleftcol - botrightcol)
+    trianglehyp = (triangleopposite**2 + triangleadjacent**2)**.5
+    return trianglehyp
+
+def zigzagbotright(mask, toprow, botrow, leftcol, rightcol):
+    print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
+    numcol = rightcol - 1
+    numrow = botrow - 1
+    botrow = botrow - 1
+    rightcol = rightcol - 1
+    print("numcol", numcol, "numrow",numrow, "botrow",botrow)
+    for startpix in range (numrow, 0, -1):
+        r = startpix
+        c = rightcol
+        # print(r,c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
+            if mask[r, c] >= 250:
+                print("Found white bottom right ", r, c)
+                return r, c
+            else:
+                # print(r, c)
+                mask[r, c] = 150
+                r = r + 1
+                c = c - 1
+
+def zigzagtopleft(mask, toprow, botrow, leftcol, rightcol):
+    print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
+    numcol = rightcol - 1
+    numrow = botrow - 1
+    botrow = botrow - 1
+    rightcol = rightcol - 1
+    print("numcol", numcol, "numrow",numrow, "botrow",botrow)
+    for startpix in range (toprow, numrow, 1):
+        r = startpix
+        c = leftcol
+        # print(r, c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
+            if mask[r, c] >= 250:
+                print("Found white top left ", r, c)
+                return r, c
+            else:
+                mask[r, c] = 150
+                r = r - 1
+                c = c + 1
+
+def zigzagtopright(mask, toprow, botrow, leftcol, rightcol):
+    print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
+    numcol = rightcol - 1
+    numrow = botrow - 1
+    botrow = botrow - 1
+    rightcol = rightcol - 1
+    print("numcol", numcol, "numrow",numrow, "botrow",botrow)
+    for startpix in range (toprow, numrow , 1):
+        r = startpix
+        c = rightcol
+        # print(r,c)
+        while r > toprow and c<= numcol and r <= botrow and c >= leftcol:
+            if mask[r, c] >= 250:
+                print("Found white top right ", r, c)
+                return r, c
+            else:
+                mask[r, c] = 150
+                # print(r, c)
+                r = r - 1
+                c = c - 1
+
+def makemaskpoint(mask, r, c, toprow, botrow, leftcol, rightcol):
+    pointsize = 50
+    half = pointsize // 2
+    for row in range(r - half, r + half):
+        for col in range(c - half, c + half):
+            if toprow <= row < botrow and leftcol <= col < rightcol:
+                mask[row, col] = 100
+    return mask
+
+def showmaskimage(mask, title="rename this window"):
+    resized = cv2.resize(mask, dsize=None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+    cv2.imshow(title, resized)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def removearucomask(mask, toprow, botrow, leftcol, rightcol):
+    arucosize = 110
+    botrow = botrow -1
+    rightcol = rightcol - 1
+    #Below is top left
+    for row in range (0, arucosize, 1):
+        for col in range (0, arucosize, 1):
+            if mask[row, col] >= 250:
+                mask[row, col] = 0
+    #Above is top left
+    #Below is bot left
+    for row in range (botrow, botrow -arucosize, -1):
+        for col in range (0, arucosize, 1):
+            if mask[row, col] >= 250:
+                mask[row, col] = 0
+    #Above is bot left
+    #Below it top right
+    for row in range (0, arucosize, 1):
+        for col in range (rightcol, rightcol - arucosize, -1):
+            if mask[row, col] >= 250:
+                mask[row, col] = 0
+    #Above it top right
+    #Below is bottom right
+    for row in range (botrow, botrow - arucosize, -1):
+        for col in range (rightcol, rightcol - arucosize, -1):
+            if mask[row, col] >= 250:
+                mask[row, col] = 0
+    #above is bottom right.
+    return mask
+
+# print(numrow)
+# print(numcol)
+# colorpixel = mask[500, 500] 
+# #This grabs the top left point on a garment.
+# for currentrow in range (100, numrow-100, 1):
+#     for currentcol in range (100, numcol-100, 1):
+#         currentcolour = mask[currentrow, currentcol]   
+#         if currentcolour == 255:
+#             topwhite = currentrow
+#             print(topwhite, currentcolour)
+#             stopnowbool = True
+#             break
+#     if stopnowbool == True:
+#             break
+    
+# stopnowbool = False
+
+# for currentrow in range (numrow-100, 100, -1):
+#     for currentcol in range (numcol-100, 100, -1):
+#         currentcolour = mask[currentrow, currentcol]
+#         # find corners of garment
+#         if currentcolour == 255:
+#             bottomwhite = currentrow
+#             print(bottomwhite, currentcolour)
+#             stopnowbool = True
+#             break
+#     if stopnowbool == True:
+#             break
+
+# heightinpixels = bottomwhite - topwhite
+# heightincm = heightinpixels/30
+# print(heightincm)import cv2
+import numpy as np
+import math
+from Eevee_shared import zigzagbotleft
+from Eevee_shared import zigzagtopleft
+from Eevee_shared import zigzagtopright
+from Eevee_shared import zigzagbotright
+from Eevee_shared import removearucomask
+from Eevee_shared import showmaskimage
+from Eevee_shared import makemaskpoint
+from Eevee_shared import measurepointsinpix
+# photo height = 1140, photo width = 1035
+# pixels per cm = 1140/38 = 30 for height and 1035/34.5 = 30
+# MAT_W_CM = 34.5 MAT_H_CM = 38.0 these are the numbers from the rectification
+mask = cv2.imread(
+    "C:/Users/wylph/Downloads/Tabitha CDT/Tcode/Tcodemain/picnicbasket/shortsongreen_rectified_mask_clean.png",
+    cv2.IMREAD_GRAYSCALE
+)
+
+color_img = cv2.imread(
+    "C:/Users/wylph/Downloads/Tabitha CDT/Tcode/Tcodemain/picnicbasket/shortsongreen_rectified_mask_clean.png"
+)
+if color_img is None:
+    print("ERROR: Could not load color image. Check file path.")
+    exit()
+
+# Ensure same size
+color_img = cv2.resize(color_img, (mask.shape[1], mask.shape[0]))
+
+mask_3ch = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+colored_masked = cv2.bitwise_and(color_img, mask_3ch)
+
+# cv2.imshow("Colored Masked", colored_masked)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+# print(mask.shape)
+stopnowbool = False
+pixelspercm = 30
+numrow = mask.shape[0]
+numcol = mask.shape[1]
+toprow = 0
+botrow = mask.shape[0]
+leftcol = 0
+rightcol = mask.shape[1]
+print(toprow, botrow, leftcol, rightcol)
+arucoremove = removearucomask(mask, toprow, botrow, leftcol, rightcol)
+showimagemask = showmaskimage(mask, title="rename this window")
+botleftpoint = zigzagbotleft(mask, toprow, botrow, leftcol, rightcol)
+botleftrow = botleftpoint[0]
+botleftcol = botleftpoint[1]
+botrightpoint = zigzagbotright(mask, toprow, botrow, leftcol, rightcol)
+botrightrow = botrightpoint[0]
+botrightcol = botrightpoint[1]
+topleftpoint = zigzagtopleft(mask, toprow, botrow, leftcol, rightcol)
+topleftrow = topleftpoint[0]
+topleftcol = topleftpoint[1]
+toprightpoint = zigzagtopright(mask, toprow, botrow, leftcol, rightcol)
+toprightrow = toprightpoint[0]
+toprightcol = toprightpoint[1]
+mask = makemaskpoint(mask, botleftrow, botleftcol, toprow, botrow, leftcol, rightcol)
+mask = makemaskpoint(mask, botrightrow, botrightcol, toprow, botrow, leftcol, rightcol)
+mask = makemaskpoint(mask, topleftrow, topleftcol, toprow, botrow, leftcol, rightcol)
+mask = makemaskpoint(mask, toprightrow, toprightcol, toprow, botrow, leftcol, rightcol)
+showimagemask = showmaskimage(mask, title="rename this window")
+measurementhemskirt = measurepointsinpix(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol)
+print(measurementhemskirt)consignorbarcodenumber = input("Please scan the consignor barcode number, then hide barcode. Press enter when you are done: ")
+print (consignorbarcodenumber)
+location = input("Please type the storage location and press enter: ")
+print (location)
+#getedits 
+correctwaist = input("Please type the brand of the garment and press enter: ")
+print (correctwaist)
+Correction = input ("Waist: 60cm, length: 44cm, do you wish to make any corrections? Type yes or no and press enter: ")
+print (Correction)
+correctwaist = input("Please type the correct waist measurement in cm and press enter: ")
+print (correctwaist)
+correctlength = input("Please type the correct length measurement in cm and press enter: ")
+print (correctlength)
+gettitle = input("Please type the title for this item and press enter: ")
+print (gettitle)
+gettags = input("Please type the tags, separated by commas, for this item and press enter: ")
+print (gettags)
+listshopify = input("Do you wish to list this item to Shopify? Type yes or no and press enter: ")
+print ("Successfully listed to Shopify, URL is reluv.com.au/admin/products/837228")
+startanew = input("Remove the garment and store it. Do you wish to see the listing? Type yes or no and press enter: ")import requests
+
+from decouple import config
+
+from datetime import datetime
+
+
+SHOPIFY_STORE_DOMAIN = config("SHOPIFY_STORE_DOMAIN")
+
+SHOPIFY_ADMIN_ACCESS_TOKEN = config("SHOPIFY_ADMIN_ACCESS_TOKEN")
+
+SHOPIFY_API_VERSION = config("SHOPIFY_API_VERSION", default="2026-01")
+
+
+def main():
+    url = f"https://{SHOPIFY_STORE_DOMAIN}/admin/api/{SHOPIFY_API_VERSION}/products.json"
+
+    headers = {
+
+    "X-Shopify-Access-Token": SHOPIFY_ADMIN_ACCESS_TOKEN,
+
+    "Content-Type": "application/json",
+
+    }
+
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+    payload = {
+
+    "product": {
+
+    "title": f"Pre-loved garment test ({timestamp})",
+
+    "status": "draft"
+
+    }
+
+    }
+
+
+    response = requests.post(url, headers=headers, json=payload, timeout=30)
+
+
+    print("HTTP status:", response.status_code)
+
+
+    if response.status_code not in (200, 201):
+        print("Failed to create product.")
+
+        print(response.text)
+
+        return
+
+
+        data = response.json()
+
+        product_id = data["product"]["id"]
+
+        print("Created product ID:", product_id)
+
+
+        # helpful: show where it is in admin (students can paste this into browser)
+
+        print("Admin URL:")
+
+        print(f"https://admin.shopify.com/store/{SHOPIFY_STORE_DOMAIN.split('.')[0]}/products/{product_id}")
+
+
+if __name__ == "__main__":
+    main()import requests
+from decouple import config
+
+
+SHOPIFY_STORE_DOMAIN = config("SHOPIFY_STORE_DOMAIN")
+SHOPIFY_ADMIN_ACCESS_TOKEN = config("SHOPIFY_ADMIN_ACCESS_TOKEN")
+SHOPIFY_API_VERSION = config("SHOPIFY_API_VERSION", default="2026-01")
+
+
+def main():
+    product_id = 14788384063856
+
+    url = (
+        f"https://{SHOPIFY_STORE_DOMAIN}/admin/api/"
+        f"{SHOPIFY_API_VERSION}/products/{product_id}/images.json"
+    )
+
+    headers = {
+        "X-Shopify-Access-Token": SHOPIFY_ADMIN_ACCESS_TOKEN,
+        "Content-Type": "application/json",
+    }
+
+    image_urls = [
+        "https://reluv.com.au/cdn/shop/products/1681619637-C7P205-VI.A_5000x.jpg?v=1681619641",
+    ]
+
+    for position, image_url in enumerate(image_urls, start=1):
+        payload = {
+            "image": {
+                "src": image_url,
+                "position": position,
+                "alt": f"Image {position}",
+            }
+        }
+
+        response = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            timeout=30,
+        )
+
+        print("Upload position", position, "HTTP status:", response.status_code)
+
+        if response.status_code not in (200, 201):
+            print("Failed at position", position)
+            print(response.text)
+            break
+
+    print("Finished.")
+
+
+if __name__ == "__main__":
+    main()

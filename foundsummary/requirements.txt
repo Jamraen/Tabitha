@@ -1,0 +1,6 @@
+collections
+Eevee_shared
+numpy  # numerical arrays and mathematical operations
+opencv-python  # computer vision and image processing
+python-decouple  # separating settings from code via env/ini files
+requests  # HTTP requests (GET, POST, PUT, etc.)

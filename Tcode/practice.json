@@ -1,0 +1,15 @@
+{
+  "type": "dress",
+  "primary_colour": "blue",
+  "season": "summer",
+  "warnings": [
+    "Size tag not readable",
+    "Product may contain radioactive isotopes",
+    "Lighting uneven"
+  ],
+  "pricing": {
+    "currency": "NZD",
+    "recommended_resale_price": 29.0,
+    "confidence": 0.7
+  }
+}
