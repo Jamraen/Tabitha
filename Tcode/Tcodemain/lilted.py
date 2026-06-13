@@ -68,16 +68,13 @@ def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm: int = 30):
     return rectified, Hmat, pixels_per_cm
 
 
-def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
-    # image_path = r"T:\Tcode\Tcodemain\picnicbasket\Shortsongreen.jpg"
-    # img_file_with_path = image_path + "\\" + filename
-    # print("THE IMAGE", img_file_with_path)
-    # loaded_image = cv2.imread(image_path)
-    print("GOT TO HERE", meowth_filename_with_path)
-    loaded_image = cv2.imread(meowth_filename_with_path)
+def main():
+    image_path = r"T:\Tcode\Tcodemain\picnicbasket\Shortsongreen.jpg"
+
+    loaded_image = cv2.imread(image_path)
 
     if loaded_image is None:
-        print("Could not load image:", meowth_filename_with_path)
+        print("Could not load image:", image_path)
         return
 
     try:
@@ -86,7 +83,7 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
         print(e)
         return
 
-    out_path = lilted_filename_with_path
+    out_path = image_path.replace(".jpg", "_rectified.jpg")
     cv2.imwrite(out_path, rectified)
 
     print("Wrote:", out_path)
@@ -95,4 +92,4 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
 
 
 if __name__ == "__main__":
-    rectify_image()
+    main()

@@ -3,10 +3,7 @@ import time
 import cv2
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def get_garment_type():
-    garment_type = input("Please type 1 for skirt, 2 for dress, 3 for pants, 4 for shirt, then press enter")
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def ensure_output_folder(folder_name: str = "photos") -> str:
     """Create an output folder next to this script if it doesn't exist."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -14,25 +11,20 @@ def ensure_output_folder(folder_name: str = "photos") -> str:
     os.makedirs(out_dir, exist_ok=True)
     return out_dir
 
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def make_short_filename(prefix: str = "photo") -> str:
+def make_filename(prefix: str = "photo") -> str:
     """Create a timestamped filename like photo_2026-02-15_14-03-22.jpg."""
     timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
     return f"{prefix}_{timestamp}.jpg"
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-def make_filename(prefix: str = "photo", description: str = "descr", madeby: str = "creatingfile") -> str:
-    """Create a timestamped filename like photo_2026-02-15_14-03-22.jpg."""
-    timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
-
-    return f"{prefix}_{description}_{madeby}_{timestamp}.jpg"
-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def take_photo(outfile) -> None:
+def main() -> None:
+    out_dir = ensure_output_folder("picnicbasket")
+
     # 0 is usually the onboard camera.
     # If you have multiple cameras, try 1, 2, etc.
     cap = cv2.VideoCapture(0)
@@ -66,11 +58,11 @@ def take_photo(outfile) -> None:
             if not label:
                 label = "photo"
 
-            # filename = make_filename(label)
-            # save_path = os.path.join(out_dir, filename)
+            filename = make_filename(label)
+            save_path = os.path.join(out_dir, filename)
 
-            cv2.imwrite(outfile, frame)
-            print(f"Saved: {outfile}")
+            cv2.imwrite(save_path, frame)
+            print(f"Saved: {save_path}")
 
         elif key == ord("q"):
             print("Quitting.")
@@ -81,4 +73,4 @@ def take_photo(outfile) -> None:
 
 
 if __name__ == "__main__":
-    take_photo()
+    main()
