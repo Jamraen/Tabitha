@@ -1,7 +1,7 @@
 from t010_meowth_photography import ensure_output_folder, make_filename, take_photo
 from t020_lilted_rectify_aruco import rectify_image
 from t030_bigted_mask import maskphoto
-from t040
+from t040_snorlax_measure import  measureimage
 import time
 folder_path = "T:\\Tcode\\Tcodemain\\tflow"
 out_folder_with_path = out_dir = ensure_output_folder("photo_output_folder")
@@ -17,3 +17,4 @@ filename = meowth_filename_with_path
 meowth_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\testphoto.jpg"
 rectify_image(meowth_filename_with_path, lilted_filename_with_path)
 maskphoto(lilted_filename_with_path, bigted_filename_with_path)
+measureimage(bigted_filename_with_path)

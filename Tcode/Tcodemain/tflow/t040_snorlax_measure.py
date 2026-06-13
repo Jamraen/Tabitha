@@ -9,7 +9,7 @@ from t000_eevee_shared import removearucomask
 from t000_eevee_shared import showmaskimage
 from t000_eevee_shared import makemaskpoint
 from t000_eevee_shared import measurepointsinpix
-from t0_ketchum_main import snorlax_filename_with_path, bigted_filename_with_path
+from t0_ketchum_main import bigted_filename_with_path
 # photo height = 1140, photo width = 1035
 # pixels per cm = 1140/38 = 30 for height and 1035/34.5 = 30
 # MAT_W_CM = 34.5 MAT_H_CM = 38.0 these are the numbers from the rectification
