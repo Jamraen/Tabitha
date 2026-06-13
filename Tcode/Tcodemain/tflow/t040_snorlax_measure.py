@@ -8,25 +8,40 @@ from t000_eevee_shared import zigzagbotright
 from t000_eevee_shared import removearucomask
 from t000_eevee_shared import showmaskimage
 from t000_eevee_shared import makemaskpoint
-from t000_eevee_shared import measurepointsinpix
-from t0_ketchum_main import bigted_filename_with_path
+from t000_eevee_shared import measurepointsonskirt
+# from t0_ketchum_main import bigted_filename_with_path
 # photo height = 1140, photo width = 1035
 # pixels per cm = 1140/38 = 30 for height and 1035/34.5 = 30
 # MAT_W_CM = 34.5 MAT_H_CM = 38.0 these are the numbers from the rectification
-mask = cv2.imread(
-    bigted_filename_with_path,
-    cv2.IMREAD_GRAYSCALE
-)
-
-color_img = cv2.imread(
-    bigted_filename_with_path
-)
-if color_img is None:
-    print("ERROR: Could not load color image. Check file path.")
-    exit()
-
 # Ensure same size
 def measureimage(bigted_filename_with_path):
+    garment_type_number = "xs"
+    while garment_type_number not in {"1", "2", "3", "4"}:
+        garment_type_number = input("Please type 1 for skirt, 2 for dress, 3 for pants, 4 for shirt, then press enter: ")
+        if garment_type_number == "1":
+            garment_type = "skirt"
+        elif garment_type_number == "2":
+            garment_type = "dress"
+        elif garment_type_number == "3":
+            garment_type = "pants"
+        elif garment_type_number == "4":
+            garment_type = "shirt"
+        else:
+            print("You must enter a valid garment type" + str(garment_type_number))
+
+    mask = cv2.imread(
+        bigted_filename_with_path,
+        cv2.IMREAD_GRAYSCALE
+       )
+
+    color_img = cv2.imread(
+        bigted_filename_with_path
+        )
+    if color_img is None:
+        print("ERROR: Could not load color image. Check file path.")
+        exit()
+
+
     color_img = cv2.resize(color_img, (mask.shape[1], mask.shape[0]))
     mask_3ch = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
     colored_masked = cv2.bitwise_and(color_img, mask_3ch)
@@ -62,8 +77,11 @@ def measureimage(bigted_filename_with_path):
     mask = makemaskpoint(mask, topleftrow, topleftcol, toprow, botrow, leftcol, rightcol)
     mask = makemaskpoint(mask, toprightrow, toprightcol, toprow, botrow, leftcol, rightcol)
     showimagemask = showmaskimage(mask, title="rename this window")
-    measurementhemskirt = measurepointsinpix(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol)
-    print(measurementhemskirt)
+    if garment_type == "skirt":
+        measurementhemskirt = measurepointsonskirt(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol)
+        print(measurementhemskirt)
+    
+
 
 if __name__ == "__main__":
     measureimage()

@@ -22,9 +22,9 @@ def zigzagbotleft(mask, toprow, botrow, leftcol, rightcol):
                 mask[r, c] = 150
                 r = r + 1
                 c = c + 1
-def measurepointsinpix(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol):
-    triangleopposite = abs(botleftrow - botrightrow)
-    triangleadjacent = abs (botleftcol - botrightcol)
+def measurepointsonskirt(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol):
+    triangleopposite = abs(topleftrow - toprightrow)
+    triangleadjacent = abs (topleftcol - toprightcol)
     trianglehyp = (triangleopposite**2 + triangleadjacent**2)**.5
     return trianglehyp
 

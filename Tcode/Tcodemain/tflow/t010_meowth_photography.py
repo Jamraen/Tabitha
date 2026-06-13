@@ -3,10 +3,6 @@ import time
 import cv2
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def get_garment_type():
-    garment_type = input("Please type 1 for skirt, 2 for dress, 3 for pants, 4 for shirt, then press enter")
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def ensure_output_folder(folder_name: str = "photos") -> str:
     """Create an output folder next to this script if it doesn't exist."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
