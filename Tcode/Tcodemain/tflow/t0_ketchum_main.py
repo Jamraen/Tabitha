@@ -1,6 +1,7 @@
 from t010_meowth_photography import ensure_output_folder, make_filename, take_photo
 from t020_lilted_rectify_aruco import rectify_image
 from t030_bigted_mask import maskphoto
+from t040
 import time
 folder_path = "T:\\Tcode\\Tcodemain\\tflow"
 out_folder_with_path = out_dir = ensure_output_folder("photo_output_folder")
