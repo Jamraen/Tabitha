@@ -7,9 +7,10 @@ DICT = cv2.aruco.DICT_4X4_50
 MAT_W_CM = 34.5
 MAT_H_CM = 60
 
+
 CORNER_IDS = {0: "TL", 1: "TR", 2: "BR", 3: "BL"}
 
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def detect_aruco_corners(loaded_image: np.ndarray) -> dict[int, np.ndarray]:
     dictionary = cv2.aruco.getPredefinedDictionary(DICT)
     parameters = cv2.aruco.DetectorParameters()
@@ -32,9 +33,8 @@ def detect_aruco_corners(loaded_image: np.ndarray) -> dict[int, np.ndarray]:
             found[marker_id] = center
 
     return found
-
-
-def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm: int = 30):
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm):
     found = detect_aruco_corners(loaded_image)
 
     missing = [mid for mid in CORNER_IDS if mid not in found]
@@ -66,22 +66,24 @@ def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm: int = 30):
     )
 
     return rectified, Hmat, pixels_per_cm
-
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
+
     # image_path = r"T:\Tcode\Tcodemain\picnicbasket\Shortsongreen.jpg"
     # img_file_with_path = image_path + "\\" + filename
     # print("THE IMAGE", img_file_with_path)
     # loaded_image = cv2.imread(image_path)
     print("GOT TO HERE", meowth_filename_with_path)
     loaded_image = cv2.imread(meowth_filename_with_path)
-
+    MAT_W_PIX = loaded_image.shape[1]
+    pixels_per_cm = round(MAT_W_PIX / MAT_W_CM)
+    print(pixels_per_cm)
     if loaded_image is None:
         print("Could not load image:", meowth_filename_with_path)
         return
 
     try:
-        rectified, _, ppcm = rectify_to_mat(loaded_image, pixels_per_cm=30)
+        rectified, _, ppcm = rectify_to_mat(loaded_image, pixels_per_cm)
     except ValueError as e:
         print(e)
         return
@@ -92,7 +94,7 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
     print("Wrote:", out_path)
     print("pixels_per_cm used:", ppcm)
     print("Rectified size (pixels):", rectified.shape[1], "x", rectified.shape[0])
-
-
+    return ppcm
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == "__main__":
     rectify_image()

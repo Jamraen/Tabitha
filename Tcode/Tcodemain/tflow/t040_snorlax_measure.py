@@ -14,6 +14,11 @@ from t000_eevee_shared import measurepointsonskirt
 # pixels per cm = 1140/38 = 30 for height and 1035/34.5 = 30
 # MAT_W_CM = 34.5 MAT_H_CM = 38.0 these are the numbers from the rectification
 # Ensure same size
+matwidthincm = 34.5
+matwidthinpix = 1035
+
+# def convpixtocm():
+
 def measureimage(bigted_filename_with_path):
     garment_type_number = "xs"
     while garment_type_number not in {"1", "2", "3", "4"}:
@@ -80,7 +85,6 @@ def measureimage(bigted_filename_with_path):
     if garment_type == "skirt":
         measurementhemskirt = measurepointsonskirt(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol)
         print(measurementhemskirt)
-    
 
 
 if __name__ == "__main__":
