@@ -1,11 +1,12 @@
 ##Currently working, just had to input the correct photo location
 import cv2
 import numpy as np
+import t00_guzzlord_storage
 
 DICT = cv2.aruco.DICT_4X4_50
 
-MAT_W_CM = 34.5
-MAT_H_CM = 60
+# MAT_W_CM = 34.5
+# MAT_H_CM = 60
 
 
 CORNER_IDS = {0: "TL", 1: "TR", 2: "BR", 3: "BL"}
@@ -34,7 +35,7 @@ def detect_aruco_corners(loaded_image: np.ndarray) -> dict[int, np.ndarray]:
 
     return found
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm):
+def rectify_to_mat(loaded_image: np.ndarray):
     found = detect_aruco_corners(loaded_image)
 
     missing = [mid for mid in CORNER_IDS if mid not in found]
@@ -48,8 +49,8 @@ def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm):
     )
 
     # output size
-    W = int(round(MAT_W_CM * pixels_per_cm))
-    H = int(round(MAT_H_CM * pixels_per_cm))
+    W = int(round(t00_guzzlord_storage.MAT_W_CM * t00_guzzlord_storage.PIXELS_PER_CM))
+    H = int(round(t00_guzzlord_storage.MAT_H_CM * t00_guzzlord_storage.PIXELS_PER_CM))
 
     # destination rectangle
     dst = np.array(
@@ -65,7 +66,7 @@ def rectify_to_mat(loaded_image: np.ndarray, pixels_per_cm):
         loaded_image, Hmat, (W, H), flags=cv2.INTER_LINEAR
     )
 
-    return rectified, Hmat, pixels_per_cm
+    return rectified, Hmat
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
 
@@ -75,15 +76,15 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
     # loaded_image = cv2.imread(image_path)
     print("GOT TO HERE", meowth_filename_with_path)
     loaded_image = cv2.imread(meowth_filename_with_path)
-    MAT_W_PIX = loaded_image.shape[1]
-    pixels_per_cm = round(MAT_W_PIX / MAT_W_CM)
-    print(pixels_per_cm)
+    t00_guzzlord_storage.MAT_W_PIX = loaded_image.shape[1]
+    t00_guzzlord_storage.PIXELS_PER_CM = round(t00_guzzlord_storage.MAT_W_PIX / t00_guzzlord_storage.MAT_W_CM)
+    print(t00_guzzlord_storage.PIXELS_PER_CM)
     if loaded_image is None:
         print("Could not load image:", meowth_filename_with_path)
         return
 
     try:
-        rectified, _, ppcm = rectify_to_mat(loaded_image, pixels_per_cm)
+        rectified, _ = rectify_to_mat(loaded_image)
     except ValueError as e:
         print(e)
         return
@@ -92,9 +93,8 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
     cv2.imwrite(out_path, rectified)
 
     print("Wrote:", out_path)
-    print("pixels_per_cm used:", ppcm)
+    print("pixels_per_cm used:", t00_guzzlord_storage.PIXELS_PER_CM)
     print("Rectified size (pixels):", rectified.shape[1], "x", rectified.shape[0])
-    return ppcm
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == "__main__":
     rectify_image()

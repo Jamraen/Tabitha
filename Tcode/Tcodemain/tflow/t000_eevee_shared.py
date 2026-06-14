@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
 import math
+import t00_guzzlord_storage
 #these are the common functions shared among the other sections of Tabitha code.
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def zigzagbotleft(mask, toprow, botrow, leftcol, rightcol):
     print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
     numcol = rightcol - 1
@@ -22,12 +24,17 @@ def zigzagbotleft(mask, toprow, botrow, leftcol, rightcol):
                 mask[r, c] = 150
                 r = r + 1
                 c = c + 1
-def measurepointsonskirt(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol):
-    triangleopposite = abs(topleftrow - toprightrow)
-    triangleadjacent = abs (topleftcol - toprightcol)
-    trianglehyp = (triangleopposite**2 + triangleadjacent**2)**.5
-    return trianglehyp
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def measurebetweenpointsinpix(row1, col1, row2, col2):
+    triangleopposite = abs(row1 - row2)
+    triangleadjacent = abs (col1 - col2)
+    measuredinpix = (triangleopposite**2 + triangleadjacent**2)**.5
+    return measuredinpix
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def measurebetweenpointsincm(measuredinpix):
+    measuredincm = measuredinpix / t00_guzzlord_storage.PIXELS_PER_CM
+    return measuredincm
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def zigzagbotright(mask, toprow, botrow, leftcol, rightcol):
     print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
     numcol = rightcol - 1
@@ -48,7 +55,7 @@ def zigzagbotright(mask, toprow, botrow, leftcol, rightcol):
                 mask[r, c] = 150
                 r = r + 1
                 c = c - 1
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def zigzagtopleft(mask, toprow, botrow, leftcol, rightcol):
     print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
     numcol = rightcol - 1
@@ -68,7 +75,7 @@ def zigzagtopleft(mask, toprow, botrow, leftcol, rightcol):
                 mask[r, c] = 150
                 r = r - 1
                 c = c + 1
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def zigzagtopright(mask, toprow, botrow, leftcol, rightcol):
     print("toprow", toprow, "botrow",botrow, "leftcol",leftcol, "rightcol",rightcol)
     numcol = rightcol - 1
@@ -89,7 +96,7 @@ def zigzagtopright(mask, toprow, botrow, leftcol, rightcol):
                 # print(r, c)
                 r = r - 1
                 c = c - 1
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def makemaskpoint(mask, r, c, toprow, botrow, leftcol, rightcol):
     pointsize = 50
     half = pointsize // 2
@@ -98,15 +105,15 @@ def makemaskpoint(mask, r, c, toprow, botrow, leftcol, rightcol):
             if toprow <= row < botrow and leftcol <= col < rightcol:
                 mask[row, col] = 100
     return mask
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def showmaskimage(mask, title="rename this window"):
     resized = cv2.resize(mask, dsize=None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
     cv2.imshow(title, resized)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def removearucomask(mask, toprow, botrow, leftcol, rightcol):
-    arucosize = 110
+    arucosize = 135
     botrow = botrow -1
     rightcol = rightcol - 1
     #Below is top left
@@ -134,7 +141,7 @@ def removearucomask(mask, toprow, botrow, leftcol, rightcol):
                 mask[row, col] = 0
     #above is bottom right.
     return mask
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # print(numrow)
 # print(numcol)
 # colorpixel = mask[500, 500] 

@@ -1,6 +1,6 @@
 import cv2, os
 import numpy as np
-
+import t00_guzzlord_storage
 def maskphoto(lilted_filename_with_path, bigted_filename_with_path):
     path = lilted_filename_with_path
     img = cv2.imread(path)

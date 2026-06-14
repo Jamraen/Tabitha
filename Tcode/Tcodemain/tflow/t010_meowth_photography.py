@@ -1,6 +1,7 @@
 import os
 import time
 import cv2
+import t00_guzzlord_storage
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def ensure_output_folder(folder_name: str = "photos") -> str:

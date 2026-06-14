@@ -1,14 +1,8 @@
 import cv2
 import numpy as np
 import math
-from t000_eevee_shared import zigzagbotleft
-from t000_eevee_shared import zigzagtopleft
-from t000_eevee_shared import zigzagtopright
-from t000_eevee_shared import zigzagbotright
-from t000_eevee_shared import removearucomask
-from t000_eevee_shared import showmaskimage
-from t000_eevee_shared import makemaskpoint
-from t000_eevee_shared import measurepointsonskirt
+import t000_eevee_shared 
+import t00_guzzlord_storage
 # from t0_ketchum_main import bigted_filename_with_path
 # photo height = 1140, photo width = 1035
 # pixels per cm = 1140/38 = 30 for height and 1035/34.5 = 30
@@ -20,7 +14,7 @@ matwidthinpix = 1035
 # def convpixtocm():
 
 def measureimage(bigted_filename_with_path):
-    garment_type_number = "xs"
+    garment_type_number = ""
     while garment_type_number not in {"1", "2", "3", "4"}:
         garment_type_number = input("Please type 1 for skirt, 2 for dress, 3 for pants, 4 for shirt, then press enter: ")
         if garment_type_number == "1":
@@ -63,28 +57,30 @@ def measureimage(bigted_filename_with_path):
     leftcol = 0
     rightcol = mask.shape[1]
     print(toprow, botrow, leftcol, rightcol)
-    arucoremove = removearucomask(mask, toprow, botrow, leftcol, rightcol)
-    showimagemask = showmaskimage(mask, title="rename this window")
-    botleftpoint = zigzagbotleft(mask, toprow, botrow, leftcol, rightcol)
+    arucoremove = t000_eevee_shared.removearucomask(mask, toprow, botrow, leftcol, rightcol)
+    showimagemask = t000_eevee_shared.showmaskimage(mask, title="rename this window")
+    botleftpoint = t000_eevee_shared.zigzagbotleft(mask, toprow, botrow, leftcol, rightcol)
     botleftrow = botleftpoint[0]
     botleftcol = botleftpoint[1]
-    botrightpoint = zigzagbotright(mask, toprow, botrow, leftcol, rightcol)
+    botrightpoint = t000_eevee_shared.zigzagbotright(mask, toprow, botrow, leftcol, rightcol)
     botrightrow = botrightpoint[0]
     botrightcol = botrightpoint[1]
-    topleftpoint = zigzagtopleft(mask, toprow, botrow, leftcol, rightcol)
+    topleftpoint = t000_eevee_shared.zigzagtopleft(mask, toprow, botrow, leftcol, rightcol)
     topleftrow = topleftpoint[0]
     topleftcol = topleftpoint[1]
-    toprightpoint = zigzagtopright(mask, toprow, botrow, leftcol, rightcol)
+    toprightpoint = t000_eevee_shared.zigzagtopright(mask, toprow, botrow, leftcol, rightcol)
     toprightrow = toprightpoint[0]
     toprightcol = toprightpoint[1]
-    mask = makemaskpoint(mask, botleftrow, botleftcol, toprow, botrow, leftcol, rightcol)
-    mask = makemaskpoint(mask, botrightrow, botrightcol, toprow, botrow, leftcol, rightcol)
-    mask = makemaskpoint(mask, topleftrow, topleftcol, toprow, botrow, leftcol, rightcol)
-    mask = makemaskpoint(mask, toprightrow, toprightcol, toprow, botrow, leftcol, rightcol)
-    showimagemask = showmaskimage(mask, title="rename this window")
+    mask = t000_eevee_shared.makemaskpoint(mask, botleftrow, botleftcol, toprow, botrow, leftcol, rightcol)
+    mask = t000_eevee_shared.makemaskpoint(mask, botrightrow, botrightcol, toprow, botrow, leftcol, rightcol)
+    mask = t000_eevee_shared.makemaskpoint(mask, topleftrow, topleftcol, toprow, botrow, leftcol, rightcol)
+    mask = t000_eevee_shared.makemaskpoint(mask, toprightrow, toprightcol, toprow, botrow, leftcol, rightcol)
+    showimagemask = t000_eevee_shared.showmaskimage(mask, title="rename this window")
     if garment_type == "skirt":
-        measurementhemskirt = measurepointsonskirt(topleftrow, topleftcol, toprightrow, toprightcol, botrightrow, botrightcol, botleftrow, botleftcol)
-        print(measurementhemskirt)
+        skirtwaistinpix = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, toprightrow, toprightcol)
+        skirtwaistincm = t000_eevee_shared.measurebetweenpointsincm (skirtwaistinpix)
+        print("Something noticable: ", skirtwaistincm)
+
 
 
 if __name__ == "__main__":
