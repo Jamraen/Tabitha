@@ -77,12 +77,12 @@ def measureimage(bigted_filename_with_path):
     mask = t000_eevee_shared.makemaskpoint(mask, toprightrow, toprightcol, toprow, botrow, leftcol, rightcol)
     showimagemask = t000_eevee_shared.showmaskimage(mask, title="rename this window")
     if garment_type == "skirt":
-        skirtwaistinpix = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, toprightrow, toprightcol)
-        skirtwaistincm = t000_eevee_shared.measurebetweenpointsincm (skirtwaistinpix)
-        skirtlengthinpix = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, botleftrow, botleftcol)
-        skirtlengthincm = t000_eevee_shared.measurebetweenpointsincm(skirtlengthinpix)
-        print("Skirt waist in cm: ", skirtwaistincm)
-        print("Skirt length in cm: ", skirtlengthincm)
+        t00_guzzlord_storage.SKIRT_WAIST_IN_PIX = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, toprightrow, toprightcol)
+        t00_guzzlord_storage.SKIRT_WAIST_IN_CM = round(t000_eevee_shared.measurebetweenpointsincm (t00_guzzlord_storage.SKIRT_WAIST_IN_PIX)*2) /2
+        t00_guzzlord_storage.SKIRT_LENGTH_IN_PIX = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, botleftrow, botleftcol)
+        t00_guzzlord_storage.SKIRT_LENGTH_IN_CM = round(t000_eevee_shared.measurebetweenpointsincm(t00_guzzlord_storage.SKIRT_LENGTH_IN_PIX)*2) /2
+        print("Skirt waist in cm: ", t00_guzzlord_storage.SKIRT_WAIST_IN_CM)
+        print("Skirt length in cm: ", t00_guzzlord_storage.SKIRT_LENGTH_IN_CM)
 
 
 
