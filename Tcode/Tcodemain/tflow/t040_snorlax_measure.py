@@ -79,7 +79,10 @@ def measureimage(bigted_filename_with_path):
     if garment_type == "skirt":
         skirtwaistinpix = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, toprightrow, toprightcol)
         skirtwaistincm = t000_eevee_shared.measurebetweenpointsincm (skirtwaistinpix)
-        print("Something noticable: ", skirtwaistincm)
+        skirtlengthinpix = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, botleftrow, botleftcol)
+        skirtlengthincm = t000_eevee_shared.measurebetweenpointsincm(skirtlengthinpix)
+        print("Skirt waist in cm: ", skirtwaistincm)
+        print("Skirt length in cm: ", skirtlengthincm)
 
 
 
