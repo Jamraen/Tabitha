@@ -2,6 +2,8 @@
 # from t020_lilted_rectify_aruco import rectify_image
 # from t030_bigted_mask import maskphoto
 # from t040_snorlax_measure import  measureimage
+import sys
+print(sys.path)
 import t010_meowth_photography
 import t020_lilted_rectify_aruco
 import t030_bigted_mask
