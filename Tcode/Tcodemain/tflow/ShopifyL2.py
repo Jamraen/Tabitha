@@ -12,7 +12,7 @@ SHOPIFY_ADMIN_ACCESS_TOKEN = config("SHOPIFY_ADMIN_ACCESS_TOKEN")
 SHOPIFY_API_VERSION = config("SHOPIFY_API_VERSION", default="2026-01")
 
 
-def main():
+def make_garment_template():
     url = f"https://{SHOPIFY_STORE_DOMAIN}/admin/api/{SHOPIFY_API_VERSION}/products.json"
 
     headers = {
@@ -69,4 +69,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    make_garment_template()

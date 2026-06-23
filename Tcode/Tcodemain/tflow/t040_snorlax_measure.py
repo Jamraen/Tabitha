@@ -14,19 +14,6 @@ matwidthinpix = 1035
 # def convpixtocm():
 
 def measureimage(bigted_filename_with_path):
-    garment_type_number = ""
-    while garment_type_number not in {"1", "2", "3", "4"}:
-        garment_type_number = input("Please type 1 for skirt, 2 for dress, 3 for pants, 4 for shirt, then press enter: ")
-        if garment_type_number == "1":
-            garment_type = "skirt"
-        elif garment_type_number == "2":
-            garment_type = "dress"
-        elif garment_type_number == "3":
-            garment_type = "pants"
-        elif garment_type_number == "4":
-            garment_type = "shirt"
-        else:
-            print("You must enter a valid garment type" + str(garment_type_number))
 
     mask = cv2.imread(
         bigted_filename_with_path,
@@ -76,7 +63,7 @@ def measureimage(bigted_filename_with_path):
     mask = t000_eevee_shared.makemaskpoint(mask, topleftrow, topleftcol, toprow, botrow, leftcol, rightcol)
     mask = t000_eevee_shared.makemaskpoint(mask, toprightrow, toprightcol, toprow, botrow, leftcol, rightcol)
     showimagemask = t000_eevee_shared.showmaskimage(mask, title="rename this window")
-    if garment_type == "skirt":
+    if t00_guzzlord_storage.GARMENT_TYPE == "skirt":
         t00_guzzlord_storage.SKIRT_WAIST_IN_PIX = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, toprightrow, toprightcol)
         t00_guzzlord_storage.SKIRT_WAIST_IN_CM = round(t000_eevee_shared.measurebetweenpointsincm (t00_guzzlord_storage.SKIRT_WAIST_IN_PIX)*2) /2
         t00_guzzlord_storage.SKIRT_LENGTH_IN_PIX = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, botleftrow, botleftcol)

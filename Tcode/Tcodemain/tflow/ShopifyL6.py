@@ -7,7 +7,7 @@ SHOPIFY_ADMIN_ACCESS_TOKEN = config("SHOPIFY_ADMIN_ACCESS_TOKEN")
 SHOPIFY_API_VERSION = config("SHOPIFY_API_VERSION", default="2026-01")
 
 
-def main():
+def add_img_lesser():
     product_id = 14788384063856
 
     url = (
@@ -49,4 +49,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    add_img_lesser()

@@ -6,7 +6,7 @@ SHOPIFY_ADMIN_ACCESS_TOKEN = config("SHOPIFY_ADMIN_ACCESS_TOKEN")
 SHOPIFY_API_VERSION = config("SHOPIFY_API_VERSION", default="2024-10")
 
 
-def main():
+def add_description():
     product_id = 14788384063856  # <-- real product ID
 
     url = f"https://{SHOPIFY_STORE_DOMAIN}/admin/api/{SHOPIFY_API_VERSION}/products/{product_id}.json"
@@ -41,4 +41,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    add_description()
