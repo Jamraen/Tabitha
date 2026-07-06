@@ -1,0 +1,110 @@
+import requests
+from decouple import config
+from datetime import datetime
+import t00_guzzlord_storage
+import base64
+
+SHOPIFY_STORE_DOMAIN = config("SHOPIFY_STORE_DOMAIN")
+
+SHOPIFY_ADMIN_ACCESS_TOKEN = config("SHOPIFY_ADMIN_ACCESS_TOKEN")
+
+SHOPIFY_API_VERSION = config("SHOPIFY_API_VERSION", default="2026-01")
+
+file_path = "C:\\Users\\Wylph\\Downloads\\Tabitha-main\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\testphoto.jpg"
+
+headers = {
+
+    "X-Shopify-Access-Token": SHOPIFY_ADMIN_ACCESS_TOKEN,
+
+    "Content-Type": "application/json",
+
+    }
+
+def make_garment_template():
+    url = f"https://{SHOPIFY_STORE_DOMAIN}/admin/api/{SHOPIFY_API_VERSION}/products.json"
+
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+    payload = {
+
+    "product": {
+
+    "title": f"t00_guzzlord_storage.GARMENT_TITLE" + str({timestamp}),
+
+    "producut_type": "skirt",
+    "vendor": "Nike",
+    "body_html": "This is shoes",
+    "varients": [{"price": t00_guzzlord_storage.GARMENT_PRICE}],
+    "tags": "green,fur,notshoes,winter,party",
+    "status": "draft",
+    "metafields": [
+        {
+            "namespace": "custom",
+            "key": "waist",
+            "value": 123,
+            "type": "number_decimal"
+        }
+    ]
+    }
+
+    }
+
+
+    response = requests.post(url, headers=headers, json=payload, timeout=30)
+
+
+    print("HTTP status:", response.status_code)
+
+
+    if response.status_code not in (200, 201):
+        print("Failed to create product.")
+        print(response.text)
+        return
+
+    data = response.json()
+
+    product_id = data["product"]["id"]
+
+    print("Created product ID:", product_id)
+
+
+    # helpful: show where it is in admin (students can paste this into browser)
+
+    print("Admin URL:")
+
+    print(f"https://admin.shopify.com/store/{SHOPIFY_STORE_DOMAIN.split('.')[0]}/products/{product_id}")
+    add_image_from_file(product_id, file_path)
+    return
+
+#--------------------------------------------
+
+def add_image_from_file(product_id, file_path):
+    with open(file_path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode("utf-8")
+    
+    url = (
+        f"https://{SHOPIFY_STORE_DOMAIN}/admin/api"
+        f"{SHOPIFY_API_VERSION}/products/{product_id}/images.json"
+    )
+    print(url, "Jee")
+    filename = file_path.split("\\")[-1]
+    print(filename, "Hi")
+    payload = {
+        "image": {
+            "attachment": encoded,
+            "filename": filename,
+            # "filename": file_path.split("\\")[-1],
+            "alt": "Product image",
+        }
+    }
+    response = requests.post(url, headers=headers, json=payload, timeout=30)
+    print("image status:", response.status_code)
+    if response.status_code not in (200, 201):
+        print("Failed:", response.text)
+        return
+    print("Image added." +str(file_path))
+
+if __name__ == "__main__":
+    make_garment_template()

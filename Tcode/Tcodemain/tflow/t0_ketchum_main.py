@@ -2,11 +2,13 @@
 # from t020_lilted_rectify_aruco import rectify_image
 # from t030_bigted_mask import maskphoto
 # from t040_snorlax_measure import  measureimage
+import t050_kecleon_shopify
 import t010_meowth_photography
 import t020_lilted_rectify_aruco
 import t030_bigted_mask
 import t040_snorlax_measure
 import t00_guzzlord_storage
+import testing_gui
 import time
 folder_path = "T:\\Tcode\\Tcodemain\\tflow"
 out_folder_with_path = out_dir = t010_meowth_photography.ensure_output_folder("photo_output_folder")
@@ -23,3 +25,4 @@ meowth_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\t
 t020_lilted_rectify_aruco.rectify_image(meowth_filename_with_path, lilted_filename_with_path)
 t030_bigted_mask.maskphoto(lilted_filename_with_path, bigted_filename_with_path)
 t040_snorlax_measure.measureimage(bigted_filename_with_path)
+testing_gui.tabitha_gui()
