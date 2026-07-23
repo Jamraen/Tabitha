@@ -1,0 +1,14 @@
+Boxes dimensions and updates on creation for tabitha
+plate measurement: 500mmx by 350mmy
+SlidingLidBox: 70mm h x 80mm d x 200mm w
+ClosedBox: 70mm h x 80 mm d x 270mm w
+
+
+https://www.makeshop.co.nz/lasercutting#Materials material: birch ply
+constants: --thickness=4 --burn=0.1
+
+ALL MEASUREMENTS ARE MILIMETERS!
+
+1: boxes.exe ClosedBox --x=200 --y=80 --h=70 --thickness=3 --burn=0.1 --output=T:\closedbox.svg
+2: boxes.exe ClosedBox --x=270 --y=80 --h=70 --thickness=4 --burn=0.1 --output=T:\closedbox.svg
+3: boxes.exe SlidingLidBox --x=200 --y=80 --h=70 --thickness=4 --burn=0.1 --output=T:\slidinglidbox.svg
