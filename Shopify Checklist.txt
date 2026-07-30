@@ -1,0 +1,1 @@
+Metafields: Inseam, Waist, Rise, Hip, Bust, Thigh Diameter, Length, Sleeve Length, Style, Size, Colour, Active Wear, Condition, Occasion, Season, Material

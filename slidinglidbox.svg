@@ -34,8 +34,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="1.0031716"
-     inkscape:cx="566.70265"
-     inkscape:cy="368.3318"
+     inkscape:cx="624.51927"
+     inkscape:cy="2253.3533"
      inkscape:window-width="1920"
      inkscape:window-height="1166"
      inkscape:window-x="-11"
@@ -104,45 +104,45 @@ Command line short: boxes SlidingLidBox --x=200 --y=80 --h=70 --thickness=4 '--o
        x="60.099998"
        y="642.20001">100.0mm, burn:0.10mm</text>
     <rect
-       style="fill:#000000;stroke:#0000ff;stroke-width:0.264583;fill-opacity:0"
+       style="fill:#000000;fill-opacity:0;stroke:#0000ff;stroke-width:0.30698"
        id="rect1"
-       width="63.299244"
-       height="14.506155"
-       x="115.25737"
-       y="531.44989" />
+       width="66.158066"
+       height="18.683708"
+       x="115.80606"
+       y="522.23993" />
     <rect
-       style="fill:#000000;stroke:#0000ff;stroke-width:0.249685;fill-opacity:0"
+       style="fill:#000000;fill-opacity:0;stroke:#0000ff;stroke-width:0.281887"
        id="rect2"
-       width="62.78664"
-       height="14.257227"
-       x="230.50728"
-       y="531.17865" />
+       width="62.754436"
+       height="18.181229"
+       x="230.25963"
+       y="523.28235" />
     <rect
-       style="fill:#000000;stroke:#0000ff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;fill-opacity:0"
+       style="fill:#000000;fill-opacity:0;stroke:#0000ff;stroke-width:0.293279;stroke-linecap:round;stroke-linejoin:round"
        id="rect1-9"
-       width="63.299244"
-       height="14.506155"
-       x="114.22207"
-       y="614.92609" />
+       width="63.006802"
+       height="17.906168"
+       x="115.02763"
+       y="608.61047" />
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#0000ff;stroke-width:0.374839;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#000000;fill-opacity:0;stroke:#0000ff;stroke-width:0.40393;stroke-linecap:round;stroke-linejoin:round"
        id="rect1-9-5"
-       width="63.188988"
-       height="29.165722"
-       x="23.660633"
-       y="587.11359" />
+       width="63.159897"
+       height="33.884075"
+       x="23.675179"
+       y="587.12811" />
     <rect
-       style="fill:#000000;stroke:#0000ff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;fill-opacity:0"
+       style="fill:#000000;fill-opacity:0;stroke:#0000ff;stroke-width:0.302333;stroke-linecap:round;stroke-linejoin:round"
        id="rect1-8"
-       width="63.299244"
-       height="14.506155"
-       x="229.71283"
-       y="615.82355" />
+       width="63.261494"
+       height="18.952101"
+       x="229.99545"
+       y="608.19379" />
     <text
        xml:space="preserve"
        transform="matrix(-0.00248768,-2.1043514,2.9107083,0.05472205,-709.19262,1092.2571)"
        id="text2"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:Plaster;-inkscape-font-specification:'Plaster, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect3);fill:#0000ff;fill-opacity:0;stroke:#0000ff;stroke-width:0.121218;stroke-dasharray:none"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:Plaster;-inkscape-font-specification:'Plaster, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect3);display:inline;fill:#0000ff;fill-opacity:0;stroke:#0000ff;stroke-width:0.121218;stroke-dasharray:none"><tspan
          x="441.59961"
          y="263.07422"
          id="tspan1">TABITHA</tspan></text>

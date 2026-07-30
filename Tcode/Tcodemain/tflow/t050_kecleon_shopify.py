@@ -31,13 +31,15 @@ def make_garment_template():
 
     "product": {
 
-    "title": f"t00_guzzlord_storage.GARMENT_TITLE" + str({timestamp}),
+    "title": t00_guzzlord_storage.TITLE + str({timestamp}),
 
-    "product_type": "skirt",
-    "vendor": "Nike",
-    "body_html": "This is shoes",
-    "varients": [{"price": t00_guzzlord_storage.GARMENT_PRICE}],
-    "tags": "green,fur,notshoes,winter,party",
+    "product_type": t00_guzzlord_storage.TYPE,
+    "vendor": "Reluv",
+    "body_html": t00_guzzlord_storage.DESCRIPTION,
+    "variants": [{"price": t00_guzzlord_storage.GARMENT_PRICE,
+                 "barcode": t00_guzzlord_storage.BARCODE,
+                 }],
+    "tags": t00_guzzlord_storage.TAGS,
     "status": "draft",
     "metafields": [
         {
@@ -141,6 +143,12 @@ def make_garment_template():
             "key": "material",
             "value": t00_guzzlord_storage.MATERIAL,
             "type": "single_line_text_field"
+        },
+        {
+            "namespace": "custom",
+            "key": "storage",
+            "value": t00_guzzlord_storage.STORAGE_LOCATION,
+            "type": "single_line_text_field"
         }
     ],
     }
@@ -171,7 +179,7 @@ def make_garment_template():
 
     print(f"https://admin.shopify.com/store/{SHOPIFY_STORE_DOMAIN.split('.')[0]}/products/{product_id}")
     add_image_from_file(product_id, file_path)
-    add_image_from_file(product_id, "C:\\Users\\Wylph\\Downloads\\Tabitha-main\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\garment_16_17-00-22_masked_bigted.jpg")
+    add_image_from_file(product_id, t00_guzzlord_storage.PHOTOFILEPATH)
     return
 
 #--------------------------------------------

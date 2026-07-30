@@ -25,4 +25,5 @@ meowth_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\t
 t020_lilted_rectify_aruco.rectify_image(meowth_filename_with_path, lilted_filename_with_path)
 t030_bigted_mask.maskphoto(lilted_filename_with_path, bigted_filename_with_path)
 t040_snorlax_measure.measureimage(bigted_filename_with_path)
+t050_kecleon_shopify.make_garment_template()
 testing_gui.tabitha_gui()

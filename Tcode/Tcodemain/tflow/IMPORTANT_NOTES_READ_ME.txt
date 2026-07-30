@@ -1,0 +1,1 @@
+Finish off the data dictionary by sending variables to guzzlord. (images, other data)
