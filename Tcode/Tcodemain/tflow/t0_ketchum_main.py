@@ -15,6 +15,7 @@ out_folder_with_path = out_dir = t010_meowth_photography.ensure_output_folder("p
 timestamp = time.strftime("%d_%H-%M-%S")
 meowth_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\garment_xxxx_rawphoto_meowth.jpg".replace("xxxx", timestamp)
 lilted_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\garment_xxxx_rectified_lilted.jpg".replace("xxxx", timestamp)
+t00_guzzlord_storage.PHOTOFILEPATH = lilted_filename_with_path
 bigted_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\garment_xxxx_masked_bigted.jpg".replace("xxxx", timestamp)
 snorlax_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\garment_xxxx_measured_snorlax.jpg".replace("xxxx", timestamp)
 print(meowth_filename_with_path + "\n" + lilted_filename_with_path + "\n" + bigted_filename_with_path + "\n" + snorlax_filename_with_path)
@@ -25,5 +26,5 @@ meowth_filename_with_path = "T:\\Tcode\\Tcodemain\\tflow\\photo_output_folder\\t
 t020_lilted_rectify_aruco.rectify_image(meowth_filename_with_path, lilted_filename_with_path)
 t030_bigted_mask.maskphoto(lilted_filename_with_path, bigted_filename_with_path)
 t040_snorlax_measure.measureimage(bigted_filename_with_path)
-t050_kecleon_shopify.make_garment_template()
 testing_gui.tabitha_gui()
+t050_kecleon_shopify.make_garment_template()

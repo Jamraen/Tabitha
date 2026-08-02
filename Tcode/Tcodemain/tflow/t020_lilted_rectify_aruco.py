@@ -96,5 +96,5 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
     print("pixels_per_cm used:", t00_guzzlord_storage.PIXELS_PER_CM)
     print("Rectified size (pixels):", rectified.shape[1], "x", rectified.shape[0])
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if __name__ == "__main__":
-    rectify_image()
+# if __name__ == "__main__":
+#     rectify_image()

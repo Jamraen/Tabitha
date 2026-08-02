@@ -31,9 +31,9 @@ def make_garment_template():
 
     "product": {
 
-    "title": t00_guzzlord_storage.TITLE + str({timestamp}),
+    "title": str(t00_guzzlord_storage.TITLE) + " " + timestamp,
 
-    "product_type": t00_guzzlord_storage.TYPE,
+    "product_type": t00_guzzlord_storage.GARMENT_TYPE,
     "vendor": "Reluv",
     "body_html": t00_guzzlord_storage.DESCRIPTION,
     "variants": [{"price": t00_guzzlord_storage.GARMENT_PRICE,
@@ -178,7 +178,7 @@ def make_garment_template():
     print("Admin URL:")
 
     print(f"https://admin.shopify.com/store/{SHOPIFY_STORE_DOMAIN.split('.')[0]}/products/{product_id}")
-    add_image_from_file(product_id, file_path)
+    # add_image_from_file(product_id, file_path)
     add_image_from_file(product_id, t00_guzzlord_storage.PHOTOFILEPATH)
     return
 
@@ -210,5 +210,5 @@ def add_image_from_file(product_id, file_path):
         return
     print("Image added." +str(file_path))
 
-if __name__ == "__main__":
-    make_garment_template()
+# if __name__ == "__main__":
+#     make_garment_template()

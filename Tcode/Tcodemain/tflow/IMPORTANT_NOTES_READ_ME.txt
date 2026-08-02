@@ -1,1 +1,1 @@
-Finish off the data dictionary by sending variables to guzzlord. (images, other data)
+Continue working on the Tabitha GUI. I want the four buttons to be along the top in a line, and then the text-boxes to be in a cascade down from there. Also need to fix the issue of kecleon being unable to parse data that comes in from the GUI
