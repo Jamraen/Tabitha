@@ -12,3 +12,5 @@ ALL MEASUREMENTS ARE MILIMETERS!
 1: boxes.exe ClosedBox --x=200 --y=80 --h=70 --thickness=3 --burn=0.1 --output=T:\closedbox.svg
 2: boxes.exe ClosedBox --x=270 --y=80 --h=70 --thickness=4 --burn=0.1 --output=T:\closedbox.svg
 3: boxes.exe SlidingLidBox --x=200 --y=80 --h=70 --thickness=4 --burn=0.1 --output=T:\slidinglidbox.svg
+4: boxes.exe UniversalBox --x=270 --y=80 --h=70 --top_edge=e --bottom_edge=F --thickness=4 --burn=0.1 --labels=0 --output=t:\opentop.svg
+5: boxes.exe SlidingLidBox --x=40 --y=40 --h=30 --thickness=4 --burn=0.1 --output=T:\cameraprotectbox.svg  
