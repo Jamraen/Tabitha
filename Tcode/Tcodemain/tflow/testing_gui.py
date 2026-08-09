@@ -1,5 +1,6 @@
 import t00_guzzlord_storage
 import tkinter as tk
+from tkinter import ttk
 def tabitha_gui():
     import tkinter as tk
     tabitha_gui = tk.Tk()
@@ -49,56 +50,88 @@ def tabitha_gui():
         print(t00_guzzlord_storage.GARMENT_TYPE)
 
     def return_price_input(event):
-        pricelabel.config(text=event.widget.get())
+        pricevalue = event.widget.get() 
+        pricelabel.config(text=pricevalue)
         print(event.widget.get())
+        t00_guzzlord_storage.PRICE = pricevalue
 
     def return_title_input(event):
-        titlelabel.config(text=event.widget.get())
+        titlevalue = event.widget.get() 
+        titlelabel.config(text=titlevalue)
         print(event.widget.get())
+        t00_guzzlord_storage.TITLE = titlevalue
 
     def return_desc_input(event):
-        desclabel.config(text=event.widget.get())
+        descvalue = event.widget.get() 
+        desclabel.config(text=descvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.DESCRIPTION = descvalue
 
     def return_barcode_input(event):
-        barcodelabel.config(text=event.widget.get())
+        barcodevalue = event.widget.get() 
+        barcodelabel.config(text=barcodevalue)
         print(event.widget.get())
+        t00_guzzlord_storage.BARCODE = barcodevalue
 
     def return_tags_input(event):
-        tagslabel.config(text=event.widget.get())
+        tagsvalue = event.widget.get() 
+        tagslabel.config(text=tagsvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.TAGS = tagsvalue
 
     def return_style_input(event):
-        stylelabel.config(text=event.widget.get())
+        stylevalue = event.widget.get() 
+        stylelabel.config(text=stylevalue)
         print(event.widget.get())
+        t00_guzzlord_storage.STYLE = stylevalue
 
     def return_material_input(event):
-        materiallabel.config(text=event.widget.get())
+        materialvalue = event.widget.get() 
+        materiallabel.config(text=materialvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.MATERIAL = materialvalue
 
     def return_season_input(event):
-        seasonlabel.config(text=event.widget.get())
+        seasonvalue = event.widget.get() 
+        seasonlabel.config(text=seasonvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.SEASON = seasonvalue
 
     def return_size_input(event):
-        seasonlabel.config(text=event.widget.get())
+        sizevalue = event.widget.get() 
+        sizelabel.config(text=sizevalue)
         print(event.widget.get())
+        t00_guzzlord_storage.SIZE = sizevalue
 
     def return_colour_input(event):
-        colourlabel.config(text=event.widget.get())
+        colourvalue = event.widget.get() 
+        colourlabel.config(text=colourvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.COLOUR = colourvalue 
 
     def return_activewear_input(event):
-        activewearlabel.config(text=event.widget.get())
+        activewearvalue = event.widget.get() 
+        activewearlabel.config(text=activewearvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.ACTIVE_WEAR = activewearvalue
 
     def return_condition_input(event):
-        conditionlabel.config(text=event.widget.get())
+        conditionvalue = event.widget.get() 
+        conditionlabel.config(text=conditionvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.CONDITION = conditionvalue
 
     def return_occasion_input(event):
-        occasionlabel.config(text=event.widget.get())
+        occasionvalue = event.widget.get() 
+        occasionlabel.config(text=occasionvalue)
         print(event.widget.get())
+        t00_guzzlord_storage.OCCASION = occasionvalue
+
+    def return_storagelocation_input(event):
+        storagelocationvalue = event.widget.get() 
+        storagelocationlabel.config(text=storagelocationvalue)
+        print(event.widget.get())
+        t00_guzzlord_storage.STORAGE_LOCATION = storagelocationvalue
 
     skirtbutton = tk.Button(
         scrollable_frame,
@@ -133,11 +166,10 @@ def tabitha_gui():
     titlelabel = tk.Label(scrollable_frame, text="Enter the Title:")
     titlelabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_title_input)
-    t00_guzzlord_storage.TITLE = return_title_input
-    entry.pack(padx=5, pady=5, fill="x")
+    title_entry = tk.Entry(scrollable_frame)
+    title_entry.insert(0, "")
+    title_entry.bind("<Return>", return_title_input)
+    title_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     titlelabel = tk.Label(scrollable_frame, text="")
@@ -146,12 +178,10 @@ def tabitha_gui():
     pricelabel = tk.Label(scrollable_frame, text="Enter the Price:")
     pricelabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_price_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.GARMENT_PRICE = return_price_input
-    print (t00_guzzlord_storage.GARMENT_PRICE)
+    price_entry = tk.Entry(scrollable_frame)
+    price_entry.insert(0, "")
+    price_entry.bind("<Return>", return_price_input)
+    price_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     pricelabel = tk.Label(scrollable_frame, text="")
@@ -161,12 +191,10 @@ def tabitha_gui():
     desclabel = tk.Label(scrollable_frame, text="Enter the Description:")
     desclabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_desc_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.GARMENT_DESC = return_desc_input
-    print (t00_guzzlord_storage.GARMENT_DESC)
+    desc_entry = tk.Entry(scrollable_frame)
+    desc_entry.insert(0, "")
+    desc_entry.bind("<Return>", return_desc_input)
+    desc_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     desclabel = tk.Label(scrollable_frame, text="")
@@ -176,12 +204,10 @@ def tabitha_gui():
     barcodelabel = tk.Label(scrollable_frame, text="Enter the Barcode:")
     barcodelabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_barcode_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.BARCODE = return_barcode_input
-    print (t00_guzzlord_storage.BARCODE)
+    barcode_entry = tk.Entry(scrollable_frame)
+    barcode_entry.insert(0, "")
+    barcode_entry.bind("<Return>", return_barcode_input)
+    barcode_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     barcodelabel = tk.Label(scrollable_frame, text="")
@@ -190,12 +216,10 @@ def tabitha_gui():
     tagslabel = tk.Label(scrollable_frame, text="Enter the Tags for the garment, seperated by commas (,):")
     tagslabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_tags_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.TAGS = return_tags_input
-    print (t00_guzzlord_storage.TAGS)
+    tags_entry = tk.Entry(scrollable_frame)
+    tags_entry.insert(0, "")
+    tags_entry.bind("<Return>", return_tags_input)
+    tags_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     tagslabel = tk.Label(scrollable_frame, text="")
@@ -204,12 +228,10 @@ def tabitha_gui():
     stylelabel = tk.Label(scrollable_frame, text="Enter the Style of the garment:")
     stylelabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_style_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.STYLE = return_style_input
-    print (t00_guzzlord_storage.STYLE)
+    style_entry = tk.Entry(scrollable_frame)
+    style_entry.insert(0, "")
+    style_entry.bind("<Return>", return_style_input)
+    style_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     stylelabel = tk.Label(scrollable_frame, text="")
@@ -218,12 +240,10 @@ def tabitha_gui():
     materiallabel = tk.Label(scrollable_frame, text="Enter the Material of the garment:")
     materiallabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_material_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.MATERIAL = return_material_input
-    print (t00_guzzlord_storage.MATERIAL)
+    material_entry = tk.Entry(scrollable_frame)
+    material_entry.insert(0, "")
+    material_entry.bind("<Return>", return_material_input)
+    material_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     materiallabel = tk.Label(scrollable_frame, text="")
@@ -232,13 +252,14 @@ def tabitha_gui():
     seasonlabel = tk.Label(scrollable_frame, text="Enter the Season of the garment:")
     seasonlabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_season_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.SEASON = return_season_input
-    print (t00_guzzlord_storage.SEASON)
-
+    season_var = tk.StringVar(value=t00_guzzlord_storage.SEASON_CHOICES[0])
+    season_entry = ttk.Combobox(
+    scrollable_frame,
+    textvariable=season_var,
+    values=t00_guzzlord_storage.SEASON_CHOICES,
+    state="readonly")
+    season_entry.pack()
+    
     # A helper label to show the selected value
     seasonlabel = tk.Label(scrollable_frame, text="")
     seasonlabel.pack(padx=5, pady=5, fill="x")
@@ -246,12 +267,10 @@ def tabitha_gui():
     sizelabel = tk.Label(scrollable_frame, text="Enter the Size of the garment:")
     sizelabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_size_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.SIZE = return_size_input
-    print (t00_guzzlord_storage.SIZE)
+    size_entry = tk.Entry(scrollable_frame)
+    size_entry.insert(0, "")
+    size_entry.bind("<Return>", return_size_input)
+    size_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     sizelabel = tk.Label(scrollable_frame, text="")
@@ -260,12 +279,10 @@ def tabitha_gui():
     colourlabel = tk.Label(scrollable_frame, text="Enter the Colour of the garment:")
     colourlabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_colour_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.COLOUR = return_colour_input
-    print (t00_guzzlord_storage.COLOUR)
+    colour_entry = tk.Entry(scrollable_frame)
+    colour_entry.insert(0, "")
+    colour_entry.bind("<Return>", return_colour_input)
+    colour_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     colourlabel = tk.Label(scrollable_frame, text="")
@@ -274,12 +291,10 @@ def tabitha_gui():
     activewearlabel = tk.Label(scrollable_frame, text="Is the garment active wear? (Y/N):")
     activewearlabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_activewear_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.ACTIVE_WEAR = return_activewear_input
-    print (t00_guzzlord_storage.ACTIVE_WEAR)
+    activewear_entry = tk.Entry(scrollable_frame)
+    activewear_entry.insert(0, "")
+    activewear_entry.bind("<Return>", return_activewear_input)
+    activewear_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     activewearlabel = tk.Label(scrollable_frame, text="")
@@ -288,12 +303,10 @@ def tabitha_gui():
     conditionlabel = tk.Label(scrollable_frame, text="Enter the condition of the garment:")
     conditionlabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_condition_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.CONDITION = return_condition_input
-    print (t00_guzzlord_storage.CONDITION)
+    condition_entry = tk.Entry(scrollable_frame)
+    condition_entry.insert(0, "")
+    condition_entry.bind("<Return>", return_condition_input)
+    condition_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     conditionlabel = tk.Label(scrollable_frame, text="")
@@ -302,21 +315,48 @@ def tabitha_gui():
     occasionlabel = tk.Label(scrollable_frame, text="Please enter the occasion of the garment:")
     occasionlabel.pack(padx=5, pady=5)
 
-    entry = tk.Entry(scrollable_frame)
-    entry.insert(0, "")
-    entry.bind("<Return>", return_occasion_input)
-    entry.pack(padx=5, pady=5, fill="x")
-    t00_guzzlord_storage.OCCASION = return_occasion_input
-    print (t00_guzzlord_storage.OCCASION)
+    occasion_entry = tk.Entry(scrollable_frame)
+    occasion_entry.insert(0, "")
+    occasion_entry.bind("<Return>", return_occasion_input)
+    occasion_entry.pack(padx=5, pady=5, fill="x")
 
     # A helper label to show the selected value
     occasionlabel = tk.Label(scrollable_frame, text="")
     occasionlabel.pack(padx=5, pady=5, fill="x")
 
+    storagelocationlabel = tk.Label(scrollable_frame, text="Please enter the Storage Location of the garment:")
+    storagelocationlabel.pack(padx=5, pady=5)
+
+    storagelocation_entry = tk.Entry(scrollable_frame)
+    storagelocation_entry.insert(0, "")
+    storagelocation_entry.bind("<Return>", return_storagelocation_input)
+    storagelocation_entry.pack(padx=5, pady=5, fill="x")
+
+    # A helper label to show the selected value
+    storagelocationlabel = tk.Label(scrollable_frame, text="")
+    storagelocationlabel.pack(padx=5, pady=5, fill="x")
+
+    def submit_and_close():
+        t00_guzzlord_storage.TITLE = title_entry.get() 
+        t00_guzzlord_storage.GARMENT_PRICE = price_entry.get() 
+        t00_guzzlord_storage.COLOUR = colour_entry.get()
+        t00_guzzlord_storage.DESCRIPTION = desc_entry.get()
+        t00_guzzlord_storage.SIZE = size_entry.get()
+        t00_guzzlord_storage.TAGS = tags_entry.get()
+        t00_guzzlord_storage.STYLE = style_entry.get()
+        t00_guzzlord_storage.COLOUR = colour_entry.get()
+        t00_guzzlord_storage.SEASON = season_entry.get()
+        t00_guzzlord_storage.MATERIAL = material_entry.get()
+        t00_guzzlord_storage.ACTIVE_WEAR = activewear_entry.get()
+        t00_guzzlord_storage.STORAGE_LOCATION = storagelocation_entry.get()
+        t00_guzzlord_storage.CONDITION = condition_entry.get()
+        t00_guzzlord_storage.OCCASION = occasion_entry.get()
+        tabitha_gui.destroy()
+
     endbutton = tk.Button(
         tabitha_gui,
-        text="End Function",
-        command=tabitha_gui.destroy,
+        text="Submit entries",
+        command=submit_and_close,
     )
     endbutton.pack(padx=5, pady=5)
 

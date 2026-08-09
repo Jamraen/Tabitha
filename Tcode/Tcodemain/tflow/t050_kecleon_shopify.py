@@ -26,6 +26,7 @@ def make_garment_template():
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    print (t00_guzzlord_storage.TITLE)
 
     payload = {
 
@@ -153,7 +154,6 @@ def make_garment_template():
     ],
     }
     }
-
 
     response = requests.post(url, headers=headers, json=payload, timeout=30)
 
