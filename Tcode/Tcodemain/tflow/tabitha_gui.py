@@ -2,6 +2,7 @@ import t00_guzzlord_storage
 import tkinter as tk
 def tabitha_gui():
     import tkinter as tk
+    tabitha_gui = tk.Tk()
     tabitha_gui.title("Tabitha")
     tabitha_gui.geometry("700x300")
 
@@ -184,13 +185,13 @@ def tabitha_gui():
         ("barcode", "Scan the Barcode:", return_barcode_input),
         ("tags", "Enter the Tags for the garment, seperated by commas (,):", return_tags_input),
         ("style", "Enter the Style of the garment:", return_style_input),
-        ("material", "Enter the Material of the garment:", return_season_input),
-        ("season", "Enter the Season of the garment:", return_material_input),
+        ("material", "Enter the Material of the garment:", return_material_input),
+        ("season", "Enter the Season of the garment:", return_season_input),
         ("size", "Enter the Size of the garment:", return_size_input),
         ("colour", "Enter the Colour of the garment:", return_colour_input),
         ("activewear", "Is the garment active wear? (Y/N):", return_activewear_input),
-        ("condition", "Enter the condition of the garment:", return_condition_input),
-        ("occasion", "Please enter the occasion of the garment:", return_occasion_input),
+        ("condition", "Enter the Condition of the garment:", return_condition_input),
+        ("occasion", "Please enter the Occasion of the garment:", return_occasion_input),
         ("storagelocation", "Please enter the Storage Location of the garment:", return_storagelocation_input),
         ]
     field_entries = {}
@@ -218,7 +219,7 @@ def tabitha_gui():
         t00_guzzlord_storage.TITLE = title_entry.get() 
         t00_guzzlord_storage.GARMENT_PRICE = price_entry.get() 
         t00_guzzlord_storage.COLOUR = colour_entry.get()
-        t00_guzzlord_storage.BARCODE = barcode_entry()
+        t00_guzzlord_storage.BARCODE = barcode_entry.get()
         t00_guzzlord_storage.DESCRIPTION = desc_entry.get()
         t00_guzzlord_storage.SIZE = size_entry.get()
         t00_guzzlord_storage.TAGS = tags_entry.get()
@@ -230,7 +231,7 @@ def tabitha_gui():
         t00_guzzlord_storage.STORAGE_LOCATION = storagelocation_entry.get()
         t00_guzzlord_storage.CONDITION = condition_entry.get()
         t00_guzzlord_storage.OCCASION = occasion_entry.get()
-        tabitha_gui.destroy
+        tabitha_gui.destroy()
 
     endbutton = tk.Button(
         tabitha_gui,

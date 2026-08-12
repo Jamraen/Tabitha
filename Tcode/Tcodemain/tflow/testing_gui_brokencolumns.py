@@ -2,11 +2,9 @@ import t00_guzzlord_storage
 import tkinter as tk
 from tkinter import ttk
 def tabitha_gui():
-    import tkinter as tk
     tabitha_gui = tk.Tk()
     tabitha_gui.title("Tkinter Button")
     tabitha_gui.geometry("1000x1000")
-
     container = tk.Frame(tabitha_gui)
     container.pack(fill="both", expand=True)
     canvas = tk.Canvas(container, highlightthickness=0) # Removed border padding
@@ -27,6 +25,22 @@ def tabitha_gui():
     canvas.bind_all("<MouseWheel>", on_mouse_wheel)
     canvas.bind_all("<Button-4>", on_mouse_wheel)
     canvas.bind_all("<Button-5>", on_mouse_wheel)
+
+    for col in range(3):
+        scrollable_frame.columnconfigure(col, weight=1)
+    def add_text_field(row, col, label_text, default_value):
+        cell = tk.Frame(scrollable_frame, padx=3, pady=2)
+        cell.grid(row=row, column=col, sticky="new", padx=3, pady=2)
+        tk.Label(cell, text=label_text).pack(anchor="w")
+        entry = tk.Entry(cell)
+        entry.insert(0, default_value)
+        entry.pack(fill="x")
+        return entry
+    fields = ["Title", "Price", "Description", "Barcode", "Tags", "Style"]
+    for i, label_text in enumerate(fields):
+        row, col = divmod(i, 3) # e.g. i=0 -> row 0, col 0 | i=3 -> row 1, col 0
+        add_text_field(row, col, label_text, "")
+
 
 
     def on_skirt_click():
@@ -163,7 +177,7 @@ def tabitha_gui():
     label = tk.Label(scrollable_frame, text="Waiting for click...")
     label.pack(padx=5, pady=5)
 
-    titlelabel = tk.Label(scrollable_frame, text="Enter the Title:")
+    ''''titlelabel = tk.Label(scrollable_frame, text="Enter the Title:")
     titlelabel.pack(padx=5, pady=5)
 
     title_entry = tk.Entry(scrollable_frame)
@@ -334,7 +348,7 @@ def tabitha_gui():
 
     # A helper label to show the selected value
     storagelocationlabel = tk.Label(scrollable_frame, text="")
-    storagelocationlabel.pack(padx=5, pady=5, fill="x")
+    storagelocationlabel.pack(padx=5, pady=5, fill="x")'''
 
     def submit_and_close():
         t00_guzzlord_storage.TITLE = title_entry.get() 
