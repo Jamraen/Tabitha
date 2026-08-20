@@ -1,12 +1,14 @@
 import t00_guzzlord_storage
+import t040_snorlax_measure
+import re
 import tkinter as tk
-def tabitha_gui():
-    import tkinter as tk
-    tabitha_gui = tk.Tk()
-    tabitha_gui.title("Tabitha")
-    tabitha_gui.geometry("700x300")
-
-    container = tk.Frame(tabitha_gui)
+from tkinter import ttk
+def tabitha_gui(bigted_filename_with_path=None):
+    outcome = "done"
+    root = tk.Tk()
+    root.title("Tabitha")
+    root.geometry(f"{root.winfo_screenwidth()}x{root.winfo_screenheight()}")
+    container = tk.Frame(root)
     container.pack(fill="both", expand=True)
     canvas = tk.Canvas(container, highlightthickness=0) # Removed border padding
     scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
@@ -50,9 +52,14 @@ def tabitha_gui():
 
     def return_price_input(event):
         pricevalue = event.widget.get() 
-        pricelabel.config(text=pricevalue)
-        print(event.widget.get())
-        t00_guzzlord_storage.PRICE = pricevalue
+        error = validate_price(pricevalue)
+        if error:
+            price_error_label.config(text=error)
+            return
+        price_error_label.config(text="")
+        # pricelabel.config(text=pricevalue)
+        # print(event.widget.get())
+        # t00_guzzlord_storage.GARMENT_PRICE = pricevalue
 
     def return_title_input(event):
         titlevalue = event.widget.get() 
@@ -167,17 +174,57 @@ def tabitha_gui():
     for col in range(3):
         main_frame.columnconfigure (col, weight=1)
 
-    def add_field(row, col, prompt_text, bind_handler):
+    # def add_field(row, col, prompt_text, bind_handler):
+    #     cell = tk.Frame(main_frame, padx=3, pady=2)
+    #     cell.grid(row=row, column=col, sticky="new", padx=3, pady=2)
+    #     tk.Label(cell, text=prompt_text).pack(anchor="w")
+    #     entry = tk.Entry(cell)
+    #     entry.insert(0, "")
+    #     entry.bind("<Return>", bind_handler)
+    #     entry.pack(fill="x")
+    #     result_label = tk.Label(cell,text="")
+    #     result_label.pack(fill="x")
+    #     return entry, result_label
+############################################################################################
+    def add_field(row,col, prompt_text, bind_handler, kind="Text", choices=None, default=""):
         cell = tk.Frame(main_frame, padx=3, pady=2)
         cell.grid(row=row, column=col, sticky="new", padx=3, pady=2)
         tk.Label(cell, text=prompt_text).pack(anchor="w")
-        entry = tk.Entry(cell)
-        entry.insert(0, "")
-        entry.bind("<Return>", bind_handler)
-        entry.pack(fill="x")
-        result_label = tk.Label(cell,text="")
+        if kind == "dropdown":
+            entry = tk.StringVar (value=default or choices[0])
+            widget = ttk.Combobox(
+                cell, textvariable=entry, values=choices, state="readonly",
+            )
+            widget.pack(fill="x")
+            entry.trace_add("write", lambda *args: bind_handler(entry))
+        elif kind =="radio":
+            entry = tk.StringVar (value=default or choices[0])
+            radio_row = tk.Frame(cell)
+            for choice in choices:
+                tk.Radiobutton(
+                    radio_row, text=choice, variable=entry, value=choice, command=lambda: bind_handler(entry)).pack(side="left")
+            radio_row.pack(fill="x")
+        else:
+            entry = tk.Entry(cell)
+            entry.insert(0, default)
+            entry.bind("<Return>", bind_handler)
+            entry.pack(fill="x")
+
+        result_label = tk.Label(cell, text="")
         result_label.pack(fill="x")
-        return entry, result_label
+        error_label = tk.Label(cell, text="", fg="red")
+        error_label.pack(fill="x")
+        return entry, result_label, error_label
+
+    def validate_price(value):
+        try:
+            price = float(value)
+        except ValueError:
+            return "Price must be a number"
+        if not (0 < price <1000):
+            return "Price must be between 0 and 1000"
+        return None
+############################################################################################
     field_definitions = [
         ("title", "Enter the Title:", return_title_input),
         ("price", "Enter the Price:", return_price_input),
@@ -196,12 +243,14 @@ def tabitha_gui():
         ]
     field_entries = {}
     field_labels = {}
+    field_errors = {}
     for i, (key, prompt_text, bind_handler) in enumerate (field_definitions):
             row, col = divmod(i, 3)
-            field_entries[key], field_labels[key] = add_field(row, col, prompt_text, bind_handler)
+            field_entries[key], field_labels[key], field_errors[key] = add_field(row, col, prompt_text, bind_handler)
 
     title_entry, titlelabel = field_entries ["title"], field_labels["title"]
     price_entry, pricelabel = field_entries ["price"], field_labels["price"]
+    price_error_label = field_errors["price"]
     desc_entry, desclabel = field_entries ["desc"], field_labels["desc"]
     barcode_entry, barcodelabel = field_entries ["barcode"], field_labels["barcode"]
     tags_entry, tagslabel = field_entries ["tags"], field_labels["tags"]
@@ -231,11 +280,11 @@ def tabitha_gui():
         t00_guzzlord_storage.STORAGE_LOCATION = storagelocation_entry.get()
         t00_guzzlord_storage.CONDITION = condition_entry.get()
         t00_guzzlord_storage.OCCASION = occasion_entry.get()
-        tabitha_gui.destroy()
+        root.destroy()
 
     endbutton = tk.Button(
-        tabitha_gui,
-        text="Submit entries",
+        root,
+        text="Upload to Shopify",
         command=submit_and_close,
     )
     endbutton.pack(padx=5, pady=5)
@@ -430,10 +479,10 @@ if __name__ == "__main__":
 #         t00_guzzlord_storage.STORAGE_LOCATION = storagelocation_entry.get()
 #         t00_guzzlord_storage.CONDITION = condition_entry.get()
 #         t00_guzzlord_storage.OCCASION = occasion_entry.get()
-#         tabitha_gui.destroy
+#         root.destroy
 
 #     endbutton = tk.Button(
-#         tabitha_gui,
+#         root,
 #         text="Submit entries",
 #         command=submit_and_close,
 #     )
@@ -441,4 +490,4 @@ if __name__ == "__main__":
 
 #     scrollable_frame.mainloop()
 # if __name__ == "__main__":
-#     tabitha_gui()
+#     root()

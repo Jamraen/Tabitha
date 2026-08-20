@@ -5,8 +5,8 @@ def maskphoto(lilted_filename_with_path, bigted_filename_with_path):
     path = lilted_filename_with_path
     img = cv2.imread(path)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    lower = np.array([15, 30, 30])
-    upper = np.array([45, 255, 255])
+    lower = np.array([65, 30, 30])
+    upper = np.array([100, 255, 255])
     # lower = np.array([30, 100, 100])
     #Unsuccessful values ^ and below
     # upper = np.array([45, 255, 255])

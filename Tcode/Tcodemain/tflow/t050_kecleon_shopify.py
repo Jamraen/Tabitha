@@ -20,6 +20,11 @@ headers = {
 
     }
 
+def to_shopify_bool(value):
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return "true" if str(value).strip().lower() in ("y", "yes", "true") else "false"
+
 def make_garment_template():
     url = f"https://{SHOPIFY_STORE_DOMAIN}/admin/api/{SHOPIFY_API_VERSION}/products.json"
 
@@ -118,7 +123,7 @@ def make_garment_template():
         {
             "namespace": "custom",
             "key": "active_wear",
-            "value": t00_guzzlord_storage.ACTIVE_WEAR,
+            "value": to_shopify_bool(t00_guzzlord_storage.ACTIVE_WEAR),
             "type": "boolean"
         },
         {
@@ -154,8 +159,10 @@ def make_garment_template():
     ],
     }
     }
-
-    response = requests.post(url, headers=headers, json=payload, timeout=30)
+    try:
+        response = requests.post(url, headers=headers, json=payload, timeout=30)
+    except requests.exceptions.RequestException as e:
+        return {"success": False, "error": f"Could not reach Shopify: {e}. Please check that the WIFI is working."}
 
 
     print("HTTP status:", response.status_code)
@@ -164,7 +171,8 @@ def make_garment_template():
     if response.status_code not in (200, 201):
         print("Failed to create product.")
         print(response.text)
-        return
+        return {"success": False, "error": f"Shopify returned {response.status_code}: {response.text}"}
+
 
     data = response.json()
 
@@ -177,10 +185,10 @@ def make_garment_template():
 
     print("Admin URL:")
 
-    print(f"https://admin.shopify.com/store/{SHOPIFY_STORE_DOMAIN.split('.')[0]}/products/{product_id}")
+    admin_url = (f"https://admin.shopify.com/store/{SHOPIFY_STORE_DOMAIN.split('.')[0]}/products/{product_id}")
     # add_image_from_file(product_id, file_path)
-    add_image_from_file(product_id, t00_guzzlord_storage.PHOTOFILEPATH)
-    return
+    image_ok = add_image_from_file(product_id, t00_guzzlord_storage.PHOTOFILEPATH)
+    return {"success": True, "product_id": product_id, "admin_url": admin_url, "image_ok": image_ok}
 
 #--------------------------------------------
 
@@ -203,11 +211,15 @@ def add_image_from_file(product_id, file_path):
             "alt": "Product image",
         }
     }
-    response = requests.post(url, headers=headers, json=payload, timeout=30)
-    print("image status:", response.status_code)
+    try: 
+        response = requests.post(url, headers=headers, json=payload, timeout=30)
+    except requests.exceptions.RequestException as e:
+        print("Failed to upload image:", e)
+        return False
+    
     if response.status_code not in (200, 201):
         print("Failed:", response.text)
-        return
+        return False
     print("Image added." +str(file_path))
 
 # if __name__ == "__main__":

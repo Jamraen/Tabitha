@@ -70,8 +70,11 @@ def measureimage(bigted_filename_with_path):
         t00_guzzlord_storage.SKIRT_LENGTH_IN_CM = round(t000_eevee_shared.measurebetweenpointsincm(t00_guzzlord_storage.SKIRT_LENGTH_IN_PIX)*2) /2
         print("Skirt waist in cm: ", t00_guzzlord_storage.SKIRT_WAIST_IN_CM)
         print("Skirt length in cm: ", t00_guzzlord_storage.SKIRT_LENGTH_IN_CM)
-
-
+    if t00_guzzlord_storage.GARMENT_TYPE == "pants":
+        t00_guzzlord_storage.PANTS_WAIST_IN_PIX = t000_eevee_shared.measurebetweenpointsinpix (topleftrow, topleftcol, toprightrow, toprightcol)
+    t00_guzzlord_storage.WAIST = str(t00_guzzlord_storage.SKIRT_WAIST_IN_CM)
+    t00_guzzlord_storage.LENGTH = str(t00_guzzlord_storage.SKIRT_LENGTH_IN_CM)
+    t00_guzzlord_storage.LENGTH_CM = str(t00_guzzlord_storage.SKIRT_LENGTH_IN_CM)
 
 if __name__ == "__main__":
     measureimage()

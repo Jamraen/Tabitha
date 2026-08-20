@@ -1,6 +1,6 @@
 import os
 import time
-import cv2
+import subprocess
 import t00_guzzlord_storage
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,52 +30,12 @@ def make_filename(prefix: str = "photo", description: str = "descr", madeby: str
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def take_photo(outfile) -> None:
-    # 0 is usually the onboard camera.
-    # If you have multiple cameras, try 1, 2, etc.
-    cap = cv2.VideoCapture(0)
-    # Try to set resolution to ~500x500
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 500)
-    if not cap.isOpened():
-        print("ERROR: Could not open camera.")
-        print("Try closing Zoom/Teams, or change VideoCapture(0) to VideoCapture(1).")
-        return
-
-    print("Camera opened.")
-    print("Press:")
-    print(" SPACE to take photo")
-    print(" Q to quit")
-
-    while True:
-        ok, frame = cap.read()
-
-        if not ok:
-            print("ERROR: Could not read a frame from the camera.")
-            break
-
-        cv2.imshow("Preview - press SPACE to capture, Q to quit", frame)
-
-        key = cv2.waitKey(1) & 0xFF
-
-        if key == ord(" "):
-            label = input("Type a label for this photo (e.g. dress_blue_001): ").strip()
-
-            if not label:
-                label = "photo"
-
-            # filename = make_filename(label)
-            # save_path = os.path.join(out_dir, filename)
-
-            cv2.imwrite(outfile, frame)
-            print(f"Saved: {outfile}")
-
-        elif key == ord("q"):
-            print("Quitting.")
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
+    print("Taking photo...")
+    subprocess.run(
+        ["rpicam-still", "-o", outfile, "-n", "-t", "1"],
+        check = True
+    )
+    print(f"Saved: {outfile}")
 
 if __name__ == "__main__":
     take_photo()

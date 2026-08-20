@@ -76,18 +76,19 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
     # loaded_image = cv2.imread(image_path)
     print("GOT TO HERE", meowth_filename_with_path)
     loaded_image = cv2.imread(meowth_filename_with_path)
+    if loaded_image is None:
+        # print("Could not load image:", meowth_filename_with_path)
+        print("Couldn't load the image. Try taking another photo.")
+        return False
     t00_guzzlord_storage.MAT_W_PIX = loaded_image.shape[1]
     t00_guzzlord_storage.PIXELS_PER_CM = round(t00_guzzlord_storage.MAT_W_PIX / t00_guzzlord_storage.MAT_W_CM)
     print(t00_guzzlord_storage.PIXELS_PER_CM)
-    if loaded_image is None:
-        print("Could not load image:", meowth_filename_with_path)
-        return
 
     try:
         rectified, _ = rectify_to_mat(loaded_image)
     except ValueError as e:
-        print(e)
-        return
+        print(f"ERROR: {e}. Make ure all 4 corner markers are visible and unobstructed in the photo, then try again.")
+        return False
 
     out_path = lilted_filename_with_path
     cv2.imwrite(out_path, rectified)
@@ -95,6 +96,7 @@ def rectify_image(meowth_filename_with_path, lilted_filename_with_path):
     print("Wrote:", out_path)
     print("pixels_per_cm used:", t00_guzzlord_storage.PIXELS_PER_CM)
     print("Rectified size (pixels):", rectified.shape[1], "x", rectified.shape[0])
+    return True
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # if __name__ == "__main__":
 #     rectify_image()
